@@ -1,0 +1,7 @@
+| Historia de Usuario | Descripción | Minuta |
+| - | - | - |
+| [US#1](https://github.com/alejoordonez02/squad10_2024_2c/issues/1) | Registro de horas por proyecto | [Operaciones (17/10/2024)](https://docs.google.com/document/d/1GrFjf58Amjw2Ld_x5dcTEN6tFOPiSQXkh_GN2e0qFn4/edit?tab=t.0#heading=h.3at9u9s4e0vp) |
+| [US#2](https://github.com/alejoordonez02/squad10_2024_2c/issues/2) | Consulta de costos de empleados | [Operaciones (17/10/2024)](https://docs.google.com/document/d/1GrFjf58Amjw2Ld_x5dcTEN6tFOPiSQXkh_GN2e0qFn4/edit?tab=t.0#heading=h.3at9u9s4e0vp) |
+| [US#3](https://github.com/alejoordonez02/squad10_2024_2c/issues/3) | Consulta de horas trabajadas de empleados | [Operaciones (17/10/2024)](https://docs.google.com/document/d/1GrFjf58Amjw2Ld_x5dcTEN6tFOPiSQXkh_GN2e0qFn4/edit?tab=t.0#heading=h.3at9u9s4e0vp) |
+| [US#4](https://github.com/alejoordonez02/squad10_2024_2c/issues/4) | Consulta de costos por proyecto | [Administración y Finanzas (17/10/2024)](https://docs.google.com/document/d/1BX7or-Wve6rXgWRp7Ft-PNx6sRsdhRV7a59SjrA526Y/edit?tab=t.0) |
+| [US#5](https://github.com/alejoordonez02/squad10_2024_2c/issues/5) | Corte de horas trabajadas para cobros parciales | [Administración y Finanzas (26/09/2024)](https://docs.google.com/document/d/1EA-TpoB3E0hZFuWhoUAINA2lwa8BZNDp50ZUu3KrZxQ/edit?tab=t.0) |
