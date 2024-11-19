@@ -1,5 +1,6 @@
 package com.carga_horaria.carga_horaria.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Project {
@@ -10,6 +11,7 @@ public class Project {
 
 // init
     public Project() {
+        this.tasks = new ArrayList<Task>();
     }
 
 // getters

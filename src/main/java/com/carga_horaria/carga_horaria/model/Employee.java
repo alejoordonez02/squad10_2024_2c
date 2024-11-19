@@ -1,5 +1,6 @@
 package com.carga_horaria.carga_horaria.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Employee {
@@ -8,12 +9,13 @@ public class Employee {
     private Long nid;
     private String firstName;
     private String lastName;
-    private float salary;
-    private WorkingHours workingHours;
+    private double salary;
+    private List<WorkLog> workLogs;
     private List<Task> asignedTasks;
 
 // init
     public Employee() {
+        this.workLogs = new ArrayList<WorkLog>();
     }
 
 // getters
@@ -29,12 +31,12 @@ public class Employee {
         return lastName;
     }
 
-    public float getSalary() {
+    public double getSalary() {
         return salary;
     }
 
-    public WorkingHours getWorkingHours() {
-        return workingHours;
+    public List<WorkLog> getWorkLogs() {
+        return workLogs;
     }
 
     public List<Task> getAsignedTasks() {
@@ -54,12 +56,12 @@ public class Employee {
         this.lastName = lastName;
     }
 
-    public void setSalary(float salary) {
+    public void setSalary(double salary) {
         this.salary = salary;
     }
 
-    public void setWorkingHours(WorkingHours workingHours) {
-        this.workingHours = workingHours;
+    public void setWorkLogs(List<WorkLog> workLogs) {
+        this.workLogs = workLogs;
     }
 
     public void setAsignedTasks(List<Task> asignedTasks) {
@@ -67,8 +69,12 @@ public class Employee {
     }
 
 // putters
-    public void addWorkedHours(float hours, Task task) {
-        this.workingHours.addWorkedHours(hours, task);
+    public void addWorkLog(WorkLog workLog) {
+        this.workLogs.add(workLog);
+    }
+
+    public void addWorkLogs(List<WorkLog> workLogs) {
+        this.workLogs.addAll(workLogs);
     }
 
     public void asignTask(Task task) {
@@ -78,4 +84,5 @@ public class Employee {
     public void asignTasks(List<Task> tasks) {
         this.asignedTasks.addAll(tasks);
     }
+
 }
