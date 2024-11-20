@@ -51,11 +51,11 @@ class EmployeeTest {
     }
 
     @Test
-    void testGetAndSetAsignedTasks() {
+    void testGetAndSetAssignedTasks() {
         Employee employee = new Employee();
-        List<Task> asignedTasks = List.of(new Task(), new Task());
-        employee.setAsignedTasks(asignedTasks);
-        assertEquals(asignedTasks, employee.getAsignedTasks());
+        List<Task> assignedTasks = List.of(new Task(), new Task());
+        employee.setAssignedTasks(assignedTasks);
+        assertEquals(assignedTasks, employee.getAssignedTasks());
     }
 
     @Test
@@ -72,6 +72,22 @@ class EmployeeTest {
         List<WorkLog> workLogs = List.of(new WorkLog(), new WorkLog());
         employee.addWorkLogs(workLogs);
         assertTrue(employee.getWorkLogs().containsAll(workLogs));
+    }
+
+    @Test
+    void testAddTask() {
+        Employee employee = new Employee();
+        Task task = new Task();
+        employee.addTask(task);
+        assertTrue(employee.getAssignedTasks().contains(task));
+    }
+
+    @Test
+    void testAddTasks() {
+        Employee employee = new Employee();
+        List<Task> tasks = List.of(new Task(), new Task());
+        employee.addTasks(tasks);
+        assertTrue(employee.getAssignedTasks().containsAll(tasks));
     }
 
 }
