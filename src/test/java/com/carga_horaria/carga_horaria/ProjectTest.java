@@ -18,6 +18,14 @@ public class ProjectTest {
     }
 
     @Test
+    void testGetAndSetDesciprtion() {
+        Project project = new Project();
+        String description = "Description";
+        project.setDescription(description);
+        assertEquals(description, project.getDescription());
+    }
+
+    @Test
     void testGetAndSetTasks() {
         Project project = new Project();
         List<Task> tasks = List.of(new Task(), new Task());

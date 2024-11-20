@@ -34,11 +34,11 @@ public class TaskTest {
     }
 
     @Test
-    void setAndGetAsignee() {
+    void setAndGetAssignee() {
         Task task = new Task();
-        Employee asignee = new Employee();
-        task.setAsignee(asignee);
-        assertEquals(asignee, task.getAsignee());
+        Employee assignee = new Employee();
+        task.setAssignee(assignee);
+        assertEquals(assignee, task.getAssignee());
     }
 
 }
