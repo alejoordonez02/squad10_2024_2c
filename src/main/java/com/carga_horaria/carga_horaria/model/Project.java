@@ -7,9 +7,10 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
-
 import java.util.ArrayList;
 import java.util.List;
+
+// [{"id":"a6e2167f-67a1-4f60-b9e9-6bae7bc3a15","nombre":"Sistema ","descripcion":", incluir integración con otras áreas, como ventas y compras, y permite la optimización de recursos."}
 
 @Entity
 public class Project {
@@ -26,11 +27,10 @@ public class Project {
     private String description;
 
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Task> tasks;
+    private List<Task> tasks = new ArrayList<>();
 
 // init
     public Project() {
-        this.tasks = new ArrayList<>();
     }
 
 // getters and setters
@@ -48,6 +48,14 @@ public class Project {
 
     public List<Task> getTasks() {
         return tasks;
+    }
+
+    public List<Employee> getEmployees() {
+        List<Employee> employees = new ArrayList<>();
+        for (Task task : tasks) {
+            employees.add(task.getAssignee());
+        }
+        return employees;
     }
 
 // setters
