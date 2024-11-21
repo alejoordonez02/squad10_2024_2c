@@ -10,11 +10,11 @@ import static org.junit.jupiter.api.Assertions.*;
 public class TaskTest {
 
     @Test
-    void setAndGetTitle() {
+    void setAndGetName() {
         Task task = new Task();
-        String title = "Task";
-        task.setTitle(title);
-        assertEquals(title, task.getTitle());
+        String name = "Task";
+        task.setName(name);
+        assertEquals(name, task.getName());
     }
 
     @Test

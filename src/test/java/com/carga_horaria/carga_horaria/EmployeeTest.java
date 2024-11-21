@@ -3,6 +3,7 @@ package com.carga_horaria.carga_horaria;
 import com.carga_horaria.carga_horaria.model.Employee;
 import com.carga_horaria.carga_horaria.model.Task;
 import com.carga_horaria.carga_horaria.model.WorkLog;
+import com.carga_horaria.carga_horaria.model.Role;
 
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
@@ -35,11 +36,11 @@ class EmployeeTest {
     }
 
     @Test
-    void testGetAndSetSalary() {
+    void testGetAndSetRole() {
         Employee employee = new Employee();
-        double salary = 1200000.0;
-        employee.setSalary(salary);
-        assertEquals(salary, employee.getSalary(), 0.01);
+        Role role = new Role();
+        employee.setRole(role);
+        assertEquals(role, employee.getRole());
     }
 
     @Test

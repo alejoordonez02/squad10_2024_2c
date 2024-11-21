@@ -2,6 +2,7 @@ package com.carga_horaria.carga_horaria;
 
 import com.carga_horaria.carga_horaria.model.Project;
 import com.carga_horaria.carga_horaria.model.Task;
+import com.carga_horaria.carga_horaria.model.Employee;
 
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
@@ -47,6 +48,18 @@ public class ProjectTest {
         List<Task> tasks = List.of(new Task(), new Task());
         project.addTasks(tasks);
         assertTrue(project.getTasks().containsAll(tasks));
+    }
+
+    @Test
+    void testGetEmployees() {
+        Project project = new Project();
+        List<Task> tasks = List.of(new Task(), new Task());
+        List<Employee> employees = List.of(new Employee(), new Employee());
+        for (int i = 0; i < tasks.size(); i++) {
+            tasks.get(i).setAssignee(employees.get(i));
+        }
+        project.setTasks(tasks);
+        assertEquals(employees, project.getEmployees());
     }
 
 }
