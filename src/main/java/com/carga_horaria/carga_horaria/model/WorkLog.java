@@ -48,6 +48,10 @@ public class WorkLog {
         return date;
     }
 
+    public Employee getEmployee() {
+        return employee;
+    }
+
 // setters
     public void setHours(double hours) {
         this.hours = hours;
@@ -59,6 +63,10 @@ public class WorkLog {
 
     public void setDate(LocalDate date) {
         this.date = date;
+    }
+
+    public void setEmployee(Employee employee) {
+        this.employee = employee;
     }
 
 }

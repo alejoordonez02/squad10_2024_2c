@@ -3,6 +3,7 @@ package com.carga_horaria.carga_horaria;
 import com.carga_horaria.carga_horaria.model.WorkLog;
 import com.carga_horaria.carga_horaria.model.Task;
 
+import java.util.List;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 import java.time.LocalDate;
