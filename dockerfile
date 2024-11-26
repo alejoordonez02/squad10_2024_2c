@@ -27,5 +27,5 @@ WORKDIR /app
 # Copiar el JAR generado desde la etapa anterior
 COPY --from=builder /app/target/carga-horaria-0.0.1-SNAPSHOT.jar carga-horaria.jar
 
-# Configurar el comando para ejecutar el JAR
-ENTRYPOINT ["java", "-jar", "carga-horaria.jar"]
+# Configurar el comando para ejecutar la aplicación, esperando a que PostgreSQL esté disponible
+ENTRYPOINT ["wait-for-it", "postgres:5432", "--", "java", "-jar", "carga-horaria.jar"]
