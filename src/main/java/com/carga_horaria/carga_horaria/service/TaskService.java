@@ -1,7 +1,8 @@
 package com.carga_horaria.carga_horaria.service;
 
+import com.carga_horaria.carga_horaria.model.Task;
+import com.carga_horaria.carga_horaria.model.Project;
 import com.carga_horaria.carga_horaria.model.Employee;
-import com.carga_horaria.carga_horaria.model.Role;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -17,17 +18,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class EmployeeService {
+public class TaskService {
 
     @Autowired
-    private RoleService roleService;
+    ProjectService projectService;
 
-    private static final String EMPLOYEES_URL = "https://anypoint.mulesoft.com/mocking/api/v1/sources/exchange/assets/32c8fe38-22a6-4fbb-b461-170dfac937e4/recursos-api/1.0.1/m/recursos";
+    @Autowired
+    EmployeeService employeeService;
 
-    public List<Employee> getEmployees() {
+    private static final String TASKS_URL = "https://anypoint.mulesoft.com/mocking/api/v1/sources/exchange/assets/32c8fe38-22a6-4fbb-b461-170dfac937e4/tareas-api/1.0.0/m/tareas";
+
+    public List<Task> getTasks() {
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(EMPLOYEES_URL))
+                .uri(URI.create(TASKS_URL))
                 .header("Accept", "application/json")
                 .build();
 
@@ -38,21 +42,21 @@ public class EmployeeService {
                 String responseBody = response.body();
                 ObjectMapper mapper = new ObjectMapper();
                 JsonNode rootNode = mapper.readTree(responseBody);
-                List<Employee> employees = new ArrayList<>();
+                List<Task> tasks = new ArrayList<>();
 
                 for (JsonNode node : rootNode) {
-                    Employee employee = new Employee();
-                    employee.setId(node.get("id").asText());
-                    employee.setFirstName(node.get("nombre").asText());
-                    employee.setLastName(node.get("apellido").asText());
-                    employee.setNid(node.get("dni").asLong());
-                    employee.setRoleId(node.get("rolId").asText());
-                    employees.add(employee);
+                    Task task = new Task();
+                    task.setId(node.get("id").asText());
+                    task.setName(node.get("nombre").asText());
+                    task.setDescription(node.get("descripcion").asText());
+                    task.setProjectId(node.get("proyectoId").asText());
+                    task.setAssigneeId(node.get("recursoId").asText());
+                    tasks.add(task);
                 }
 
-                return employees;
+                return tasks;
             } else {
-                System.err.println("Error al cargar empleados: " + response.statusCode());
+                System.err.println("Error cargando tareas: " + response.statusCode());
                 return List.of();
             }
         } catch (IOException | InterruptedException e) {
@@ -61,11 +65,11 @@ public class EmployeeService {
         }
     }
 
-    public Employee getEmployee(String employee_id) {
-        List<Employee> employees = getEmployees();
-        for (Employee employee : employees) {
-            if (employee.getId().equals(employee_id)) {
-                return employee;
+    public Task getTask(String taskId) {
+        List<Task> tasks = getTasks();
+        for (Task task : tasks) {
+            if (task.getId().equals(taskId)) {
+                return task;
             }
         }
         return null;

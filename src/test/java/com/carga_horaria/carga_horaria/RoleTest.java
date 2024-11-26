@@ -25,12 +25,12 @@ public class RoleTest {
         assertEquals(experience, role.getExperience());
     }
 
-    @Test
-    void testGetAndSetEmployees() {
-        Role role = new Role();
-        List<Employee> employees = List.of(new Employee(), new Employee());
-        role.setEmployees(employees);
-        assertEquals(employees, role.getEmployees());
-    }
+    // @Test
+    // void testGetAndSetEmployees() {
+    //     Role role = new Role();
+    //     List<Employee> employees = List.of(new Employee(), new Employee());
+    //     role.setEmployees(employees);
+    //     assertEquals(employees, role.getEmployees());
+    // }
 
 }

@@ -1,5 +1,8 @@
 package com.carga_horaria.carga_horaria.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -15,8 +18,7 @@ public class Task {
 
 // attributes
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String id;
 
     @Column(name = "name")
     private String name;
@@ -24,20 +26,16 @@ public class Task {
     @Column(name = "description")
     private String description;
 
-    @ManyToOne
-    @JoinColumn(name = "project_id")
-    private Project project;
+    private String project_id;
 
-    @ManyToOne
-    @JoinColumn(name = "assignee_id")
-    private Employee assignee;
+    private String assignee_id;
 
 // init
     public Task() {
     }
 
 // getters
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
@@ -49,16 +47,16 @@ public class Task {
         return description;
     }
 
-    public Project getProject() {
-        return project;
+    public String getProjectId() {
+        return project_id;
     }
 
-    public Employee getAssignee() {
-        return assignee;
+    public String getAssigneeId() {
+        return assignee_id;
     }
 
 // setters
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -70,12 +68,12 @@ public class Task {
         this.description = description;
     }
 
-    public void setProject(Project project) {
-        this.project = project;
+    public void setProjectId(String project_id) {
+        this.project_id = project_id;
     }
 
-    public void setAssignee(Employee assignee) {
-        this.assignee = assignee;
+    public void setAssigneeId(String assignee_id) {
+        this.assignee_id = assignee_id;
     }
 
 }

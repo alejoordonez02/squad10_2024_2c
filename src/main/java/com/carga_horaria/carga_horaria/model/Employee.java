@@ -13,6 +13,9 @@ import jakarta.persistence.OneToMany;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 // [{"id":"ff14a491-e26d-4092-86ea-d76f20c165d1","nombre":"Martin","apellido":"Garcia","dni":"33834234","rolId":"1f14a491-e26d-4092-86ea-d76f20c165d1"}
 // {"id":"2e6ecd47-fa18-490e-b25a-c9101a398b6d","nombre":"Lucia","apellido":"Perez","dni":"33834235","rolId":"1f14a491-e26d-4092-86ea-d76f20c165d1"}
 // {"id":"47f744bb-0553-497a-b6e3-fdb64ddaca2a","nombre":"Mariana","apellido":"Juarez","dni":"31834234","rolId":"1f14a491-e26d-4092-86ea-d76f20c165d1"}
@@ -22,8 +25,7 @@ public class Employee {
 
 // attributes
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String id;
 
     @Column(name = "nid")
     private Long nid;
@@ -34,22 +36,18 @@ public class Employee {
     @Column(name = "lastName")
     private String lastName;
 
-    @ManyToOne
-    @JoinColumn(name = "role_id")
-    private Role role;
+    private String role_id;
 
-    @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<WorkLog> workLogs= new ArrayList<>();
+    private List<String> workLog_ids = new ArrayList<>();
 
-    @OneToMany(mappedBy = "assignee", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Task> assignedTasks = new ArrayList<>();
+    private List<String> assignedTask_ids = new ArrayList<>();
 
 // init
     public Employee() {
     }
 
 // getters
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
@@ -65,20 +63,20 @@ public class Employee {
         return lastName;
     }
 
-    public Role getRole() {
-        return role;
+    public String getRole() {
+        return role_id;
     }
 
-    public List<WorkLog> getWorkLogs() {
-        return workLogs;
+    public List<String> getWorkLogs() {
+        return workLog_ids;
     }
 
-    public List<Task> getAssignedTasks() {
-        return assignedTasks;
+    public List<String> getAssignedTasks() {
+        return assignedTask_ids;
     }
 
 // setters
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -94,33 +92,33 @@ public class Employee {
         this.lastName = lastName;
     }
 
-    public void setRole(Role role) {
-        this.role = role;
+    public void setRoleId(String role_id) {
+        this.role_id = role_id;
     }
 
-    public void setWorkLogs(List<WorkLog> workLogs) {
-        this.workLogs = workLogs;
+    public void setWorkLogIds(List<String> workLog_ids) {
+        this.workLog_ids = workLog_ids;
     }
 
-    public void setAssignedTasks(List<Task> assignedTasks) {
-        this.assignedTasks = assignedTasks;
+    public void setAssignedTaskIds(List<String> assignedTask_ids) {
+        this.assignedTask_ids = assignedTask_ids;
     }
 
 // putters
-    public void addWorkLog(WorkLog workLog) {
-        this.workLogs.add(workLog);
+    public void addWorkLogId(String workLog_id) {
+        this.workLog_ids.add(workLog_id);
     }
 
-    public void addWorkLogs(List<WorkLog> workLogs) {
-        this.workLogs.addAll(workLogs);
+    public void addWorkLogIds(List<String> workLog_ids) {
+        this.workLog_ids.addAll(workLog_ids);
     }
 
-    public void addTask(Task task) {
-        this.assignedTasks.add(task);
+    public void addTask(String task_id) {
+        this.assignedTask_ids.add(task_id);
     }
 
-    public void addTasks(List<Task> tasks) {
-        this.assignedTasks.addAll(tasks);
+    public void addTasks(List<String> task_ids) {
+        this.assignedTask_ids.addAll(task_ids);
     }
 
 }

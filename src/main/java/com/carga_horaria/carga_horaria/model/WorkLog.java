@@ -9,6 +9,8 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import java.time.LocalDate;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 @Entity
 public class WorkLog {
 
@@ -20,16 +22,14 @@ public class WorkLog {
     @Column(name = "hours")
     private double hours;
 
-    @ManyToOne
-    @JoinColumn(name = "task_id")
-    private Task task;
+    @Column(name = "task_id")
+    private String task_id;
 
     @Column(name = "date")
     private LocalDate date;
 
-    @ManyToOne
-    @JoinColumn(name = "employee_id")
-    private Employee employee;
+    @Column(name = "employee_id")
+    private String employee_id;
 
 // init
     public WorkLog() {
@@ -40,12 +40,16 @@ public class WorkLog {
         return hours;
     }
 
-    public Task getTask() {
-        return task;
+    public String getTaskId() {
+        return task_id;
     }
 
     public LocalDate getDate() {
         return date;
+    }
+
+    public String getEmployeeId() {
+        return employee_id;
     }
 
 // setters
@@ -53,12 +57,16 @@ public class WorkLog {
         this.hours = hours;
     }
 
-    public void setTask(Task task) {
-        this.task = task;
+    public void setTaskId(String task_id) {
+        this.task_id = task_id;
     }
 
     public void setDate(LocalDate date) {
         this.date = date;
+    }
+
+    public void setEmployeeId(String employee_id) {
+        this.employee_id = employee_id;
     }
 
 }

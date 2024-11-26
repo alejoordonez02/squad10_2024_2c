@@ -2,6 +2,10 @@ package com.carga_horaria.carga_horaria.model;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -21,8 +25,7 @@ public class Role {
 
 // attributes
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String id;
 
     @Column(name = "name")
     private String name;
@@ -30,15 +33,14 @@ public class Role {
     @Column(name = "experience")
     private String experience;
 
-    @OneToMany(mappedBy = "role", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Employee> employees = new ArrayList<Employee>();
+    private List<String> employee_ids = new ArrayList<>();
 
 // init
     public Role() {
     }
 
 // getters
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
@@ -50,12 +52,12 @@ public class Role {
         return experience;
     }
 
-    public List<Employee> getEmployees() {
-        return employees;
+    public List<String> getEmployeeIds() {
+        return employee_ids;
     }
 
 // setters
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -67,8 +69,13 @@ public class Role {
         this.experience = experience;
     }
 
-    public void setEmployees(List<Employee> employees) {
-        this.employees = employees;
+    public void setEmployeeIds(List<String> employee_ids) {
+        this.employee_ids = employee_ids;
+    }
+
+// putters
+    public void addEmployeeId(String employee_id) {
+        employee_ids.add(employee_id);
     }
 
 }
