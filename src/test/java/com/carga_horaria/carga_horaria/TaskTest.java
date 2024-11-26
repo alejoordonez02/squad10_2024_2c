@@ -10,35 +10,43 @@ import static org.junit.jupiter.api.Assertions.*;
 public class TaskTest {
 
     @Test
-    void setAndGetName() {
+    void testGetAndSetId() {
         Task task = new Task();
-        String name = "Task";
+        String id = "task1";
+        task.setId(id);
+        assertEquals(id, task.getId());
+    }
+
+    @Test
+    void testGetAndSetName() {
+        Task task = new Task();
+        String name = "Task Name";
         task.setName(name);
         assertEquals(name, task.getName());
     }
 
     @Test
-    void setAndGetDescription() {
+    void testGetAndSetDescription() {
         Task task = new Task();
-        String description = "Description";
+        String description = "Task Description";
         task.setDescription(description);
         assertEquals(description, task.getDescription());
     }
 
     @Test
-    void setAndGetProject() {
+    void testGetAndSetProjectId() {
         Task task = new Task();
-        Project project = new Project();
-        task.setProject(project);
-        assertEquals(project, task.getProject());
+        String projectId = "project1";
+        task.setProjectId(projectId);
+        assertEquals(projectId, task.getProjectId());
     }
 
     @Test
-    void setAndGetAssignee() {
+    void testGetAndSetAssigneeId() {
         Task task = new Task();
-        Employee assignee = new Employee();
-        task.setAssignee(assignee);
-        assertEquals(assignee, task.getAssignee());
+        String assigneeId = "assignee1";
+        task.setAssigneeId(assigneeId);
+        assertEquals(assigneeId, task.getAssigneeId());
     }
 
 }

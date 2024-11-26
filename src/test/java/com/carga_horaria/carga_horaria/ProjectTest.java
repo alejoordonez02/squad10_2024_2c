@@ -1,9 +1,6 @@
 package com.carga_horaria.carga_horaria;
 
 import com.carga_horaria.carga_horaria.model.Project;
-import com.carga_horaria.carga_horaria.model.Task;
-import com.carga_horaria.carga_horaria.model.Employee;
-
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 import java.util.List;
@@ -19,7 +16,7 @@ public class ProjectTest {
     }
 
     @Test
-    void testGetAndSetDesciprtion() {
+    void testGetAndSetDescription() {
         Project project = new Project();
         String description = "Description";
         project.setDescription(description);
@@ -27,39 +24,27 @@ public class ProjectTest {
     }
 
     @Test
-    void testGetAndSetTasks() {
+    void testGetAndSetTaskIds() {
         Project project = new Project();
-        List<Task> tasks = List.of(new Task(), new Task());
-        project.setTasks(tasks);
-        assertEquals(tasks, project.getTasks());
+        List<String> taskIds = List.of("task1", "task2");
+        project.setTaskIds(taskIds);
+        assertEquals(taskIds, project.getTaskIds());
     }
 
     @Test
-    void testAddTask() {
+    void testAddTaskId() {
         Project project = new Project();
-        Task task = new Task();
-        project.addTask(task);
-        assertTrue(project.getTasks().contains(task));
+        String taskId = "task1";
+        project.addTaskId(taskId);
+        assertTrue(project.getTaskIds().contains(taskId));
     }
 
     @Test
-    void testAddTasks() {
+    void testAddTaskIds() {
         Project project = new Project();
-        List<Task> tasks = List.of(new Task(), new Task());
-        project.addTasks(tasks);
-        assertTrue(project.getTasks().containsAll(tasks));
-    }
-
-    @Test
-    void testGetEmployees() {
-        Project project = new Project();
-        List<Task> tasks = List.of(new Task(), new Task());
-        List<Employee> employees = List.of(new Employee(), new Employee());
-        for (int i = 0; i < tasks.size(); i++) {
-            tasks.get(i).setAssignee(employees.get(i));
-        }
-        project.setTasks(tasks);
-        assertEquals(employees, project.getEmployees());
+        List<String> taskIds = List.of("task1", "task2");
+        project.addTaskIds(taskIds);
+        assertTrue(project.getTaskIds().containsAll(taskIds));
     }
 
 }

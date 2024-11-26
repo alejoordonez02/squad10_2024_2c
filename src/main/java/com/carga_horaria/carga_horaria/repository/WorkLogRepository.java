@@ -10,8 +10,8 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface WorkLogRepository extends JpaRepository<WorkLog, Long> {
-    @Query("SELECT w FROM WorkLog w WHERE w.employee.id = :employeeId AND YEAR(w.date) = :year AND MONTH(w.date) = :month")
-    List<WorkLog> findWorkLog(@Param("employeeId") Long employeeId, 
-                       @Param("year") int year, 
-                       @Param("month") int month);
+    @Query("SELECT w FROM WorkLog w WHERE w.employee_id = :employeeId AND YEAR(w.date) = :year AND MONTH(w.date) = :month")
+    List<WorkLog> findWorkLog(@Param("employeeId") String employeeId, 
+                              @Param("year") int year, 
+                              @Param("month") int month);
 }

@@ -33,9 +33,7 @@ public class Role {
     @Column(name = "experience")
     private String experience;
 
-    @OneToMany(mappedBy = "role", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonBackReference
-    private List<Employee> employees = new ArrayList<Employee>();
+    private List<String> employee_ids = new ArrayList<>();
 
 // init
     public Role() {
@@ -54,8 +52,8 @@ public class Role {
         return experience;
     }
 
-    public List<Employee> getEmployees() {
-        return employees;
+    public List<String> getEmployeeIds() {
+        return employee_ids;
     }
 
 // setters
@@ -71,13 +69,13 @@ public class Role {
         this.experience = experience;
     }
 
-    public void setEmployees(List<Employee> employees) {
-        this.employees = employees;
+    public void setEmployeeIds(List<String> employee_ids) {
+        this.employee_ids = employee_ids;
     }
 
 // putters
-    public void addEmployee(Employee employee) {
-        employees.add(employee);
+    public void addEmployeeId(String employee_id) {
+        employee_ids.add(employee_id);
     }
 
 }

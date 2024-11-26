@@ -36,18 +36,11 @@ public class Employee {
     @Column(name = "lastName")
     private String lastName;
 
-    @ManyToOne
-    @JoinColumn(name = "role_id")
-    @JsonManagedReference
-    private Role role;
+    private String role_id;
 
-    @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference
-    private List<WorkLog> workLogs= new ArrayList<>();
+    private List<String> workLog_ids = new ArrayList<>();
 
-    @OneToMany(mappedBy = "assignee", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference
-    private List<Task> assignedTasks = new ArrayList<>();
+    private List<String> assignedTask_ids = new ArrayList<>();
 
 // init
     public Employee() {
@@ -70,16 +63,16 @@ public class Employee {
         return lastName;
     }
 
-    public Role getRole() {
-        return role;
+    public String getRole() {
+        return role_id;
     }
 
-    public List<WorkLog> getWorkLogs() {
-        return workLogs;
+    public List<String> getWorkLogs() {
+        return workLog_ids;
     }
 
-    public List<Task> getAssignedTasks() {
-        return assignedTasks;
+    public List<String> getAssignedTasks() {
+        return assignedTask_ids;
     }
 
 // setters
@@ -99,33 +92,33 @@ public class Employee {
         this.lastName = lastName;
     }
 
-    public void setRole(Role role) {
-        this.role = role;
+    public void setRoleId(String role_id) {
+        this.role_id = role_id;
     }
 
-    public void setWorkLogs(List<WorkLog> workLogs) {
-        this.workLogs = workLogs;
+    public void setWorkLogIds(List<String> workLog_ids) {
+        this.workLog_ids = workLog_ids;
     }
 
-    public void setAssignedTasks(List<Task> assignedTasks) {
-        this.assignedTasks = assignedTasks;
+    public void setAssignedTaskIds(List<String> assignedTask_ids) {
+        this.assignedTask_ids = assignedTask_ids;
     }
 
 // putters
-    public void addWorkLog(WorkLog workLog) {
-        this.workLogs.add(workLog);
+    public void addWorkLogId(String workLog_id) {
+        this.workLog_ids.add(workLog_id);
     }
 
-    public void addWorkLogs(List<WorkLog> workLogs) {
-        this.workLogs.addAll(workLogs);
+    public void addWorkLogIds(List<String> workLog_ids) {
+        this.workLog_ids.addAll(workLog_ids);
     }
 
-    public void addTask(Task task) {
-        this.assignedTasks.add(task);
+    public void addTask(String task_id) {
+        this.assignedTask_ids.add(task_id);
     }
 
-    public void addTasks(List<Task> tasks) {
-        this.assignedTasks.addAll(tasks);
+    public void addTasks(List<String> task_ids) {
+        this.assignedTask_ids.addAll(task_ids);
     }
 
 }

@@ -1,9 +1,6 @@
 package com.carga_horaria.carga_horaria;
 
 import com.carga_horaria.carga_horaria.model.WorkLog;
-import com.carga_horaria.carga_horaria.model.Task;
-
-import java.util.List;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 import java.time.LocalDate;
@@ -19,11 +16,11 @@ public class WorkLogTest {
     }
 
     @Test
-    void testGetAndSetTask() {
+    void testGetAndSetTaskId() {
         WorkLog workLog = new WorkLog();
-        Task task = new Task();
-        workLog.setTask(task);
-        assertEquals(task, workLog.getTask());
+        String taskId = "task1";
+        workLog.setTaskId(taskId);
+        assertEquals(taskId, workLog.getTaskId());
     }
 
     @Test
@@ -34,4 +31,11 @@ public class WorkLogTest {
         assertEquals(date, workLog.getDate());
     }
 
+    @Test
+    void testGetAndSetEmployeeId() {
+        WorkLog workLog = new WorkLog();
+        String employeeId = "employee1";
+        workLog.setEmployeeId(employeeId);
+        assertEquals(employeeId, workLog.getEmployeeId());
+    }
 }

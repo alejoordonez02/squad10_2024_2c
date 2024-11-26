@@ -46,10 +46,7 @@ public class EmployeeService {
                     employee.setFirstName(node.get("nombre").asText());
                     employee.setLastName(node.get("apellido").asText());
                     employee.setNid(node.get("dni").asLong());
-
-                    Role role = roleService.getRole(node.get("rolId").asText());
-                    employee.setRole(role);
-
+                    employee.setRoleId(node.get("rolId").asText());
                     employees.add(employee);
                 }
 

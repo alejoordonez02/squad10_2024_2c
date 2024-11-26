@@ -10,6 +10,7 @@ import jakarta.persistence.OneToMany;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 // [{"id":"a6e2167f-67a1-4f60-b9e9-6bae7bc3a15","nombre":"Sistema ","descripcion":", incluir integración con otras áreas, como ventas y compras, y permite la optimización de recursos."}
@@ -27,9 +28,7 @@ public class Project {
     @Column(name = "description")
     private String description;
 
-    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference
-    private List<Task> tasks = new ArrayList<>();
+    private List<String> task_ids = new ArrayList<>();
 
 // init
     public Project() {
@@ -48,16 +47,8 @@ public class Project {
         return description;
     }
 
-    public List<Task> getTasks() {
-        return tasks;
-    }
-
-    public List<Employee> getEmployees() {
-        List<Employee> employees = new ArrayList<>();
-        for (Task task : tasks) {
-            employees.add(task.getAssignee());
-        }
-        return employees;
+    public List<String> getTaskIds() {
+        return task_ids;
     }
 
 // setters
@@ -73,17 +64,17 @@ public class Project {
         this.description = description;
     }
 
-    public void setTasks(List<Task> tasks) {
-        this.tasks = tasks;
+    public void setTaskIds(List<String> task_ids) {
+        this.task_ids = task_ids;
     }
 
 // putters
-    public void addTask(Task task) {
-        this.tasks.add(task);
+    public void addTaskId(String task_id) {
+        this.task_ids.add(task_id);
     }
 
-    public void addTasks(List<Task> tasks) {
-        this.tasks.addAll(tasks);
+    public void addTaskIds(List<String> task_ids) {
+        this.task_ids.addAll(task_ids);
     }
 
 }

@@ -49,13 +49,8 @@ public class TaskService {
                     task.setId(node.get("id").asText());
                     task.setName(node.get("nombre").asText());
                     task.setDescription(node.get("descripcion").asText());
-
-                    Project project = projectService.getProject(node.get("proyectoId").asText());
-                    task.setProject(project);
-
-                    Employee assignee = employeeService.getEmployee(node.get("recursoId").asText());
-                    task.setAssignee(assignee);
-
+                    task.setProjectId(node.get("proyectoId").asText());
+                    task.setAssigneeId(node.get("recursoId").asText());
                     tasks.add(task);
                 }
 
@@ -69,4 +64,15 @@ public class TaskService {
             return List.of();
         }
     }
+
+    public Task getTask(String taskId) {
+        List<Task> tasks = getTasks();
+        for (Task task : tasks) {
+            if (task.getId().equals(taskId)) {
+                return task;
+            }
+        }
+        return null;
+    }
+
 }
