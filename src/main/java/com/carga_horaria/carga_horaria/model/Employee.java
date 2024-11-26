@@ -13,6 +13,9 @@ import jakarta.persistence.OneToMany;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 // [{"id":"ff14a491-e26d-4092-86ea-d76f20c165d1","nombre":"Martin","apellido":"Garcia","dni":"33834234","rolId":"1f14a491-e26d-4092-86ea-d76f20c165d1"}
 // {"id":"2e6ecd47-fa18-490e-b25a-c9101a398b6d","nombre":"Lucia","apellido":"Perez","dni":"33834235","rolId":"1f14a491-e26d-4092-86ea-d76f20c165d1"}
 // {"id":"47f744bb-0553-497a-b6e3-fdb64ddaca2a","nombre":"Mariana","apellido":"Juarez","dni":"31834234","rolId":"1f14a491-e26d-4092-86ea-d76f20c165d1"}
@@ -22,8 +25,7 @@ public class Employee {
 
 // attributes
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String id;
 
     @Column(name = "nid")
     private Long nid;
@@ -36,12 +38,15 @@ public class Employee {
 
     @ManyToOne
     @JoinColumn(name = "role_id")
+    @JsonManagedReference
     private Role role;
 
     @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private List<WorkLog> workLogs= new ArrayList<>();
 
     @OneToMany(mappedBy = "assignee", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private List<Task> assignedTasks = new ArrayList<>();
 
 // init
@@ -49,7 +54,7 @@ public class Employee {
     }
 
 // getters
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
@@ -78,7 +83,7 @@ public class Employee {
     }
 
 // setters
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 

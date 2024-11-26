@@ -9,6 +9,8 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import java.time.LocalDate;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 @Entity
 public class WorkLog {
 
@@ -29,6 +31,7 @@ public class WorkLog {
 
     @ManyToOne
     @JoinColumn(name = "employee_id")
+    @JsonBackReference
     private Employee employee;
 
 // init

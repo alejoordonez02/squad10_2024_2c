@@ -1,5 +1,7 @@
 package com.carga_horaria.carga_horaria.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -15,8 +17,7 @@ public class Task {
 
 // attributes
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String id;
 
     @Column(name = "name")
     private String name;
@@ -26,10 +27,12 @@ public class Task {
 
     @ManyToOne
     @JoinColumn(name = "project_id")
+    @JsonBackReference
     private Project project;
 
     @ManyToOne
     @JoinColumn(name = "assignee_id")
+    @JsonBackReference
     private Employee assignee;
 
 // init
@@ -37,7 +40,7 @@ public class Task {
     }
 
 // getters
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
@@ -58,7 +61,7 @@ public class Task {
     }
 
 // setters
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 

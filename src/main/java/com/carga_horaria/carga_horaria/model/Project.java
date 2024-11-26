@@ -10,6 +10,8 @@ import jakarta.persistence.OneToMany;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 // [{"id":"a6e2167f-67a1-4f60-b9e9-6bae7bc3a15","nombre":"Sistema ","descripcion":", incluir integración con otras áreas, como ventas y compras, y permite la optimización de recursos."}
 
 @Entity
@@ -17,8 +19,7 @@ public class Project {
 
 // attributes
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String id;
 
     @Column(name = "name")
     private String name;
@@ -27,6 +28,7 @@ public class Project {
     private String description;
 
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private List<Task> tasks = new ArrayList<>();
 
 // init
@@ -34,7 +36,7 @@ public class Project {
     }
 
 // getters and setters
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
@@ -59,7 +61,7 @@ public class Project {
     }
 
 // setters
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 

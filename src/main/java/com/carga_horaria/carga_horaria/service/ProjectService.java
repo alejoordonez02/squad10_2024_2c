@@ -1,6 +1,6 @@
 package com.carga_horaria.carga_horaria.service;
 
-import com.carga_horaria.carga_horaria.model.Role;
+import com.carga_horaria.carga_horaria.model.Project;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Service;
@@ -14,14 +14,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class RoleService {
+public class ProjectService {
 
-    private static final String ROLES_URL = "https://anypoint.mulesoft.com/mocking/api/v1/sources/exchange/assets/32c8fe38-22a6-4fbb-b461-170dfac937e4/roles-api/1.0.0/m/roles";
+    private static final String PROJECTS_URL = "https://anypoint.mulesoft.com/mocking/api/v1/sources/exchange/assets/32c8fe38-22a6-4fbb-b461-170dfac937e4/proyectos-api/1.0.0/m/proyectos";
 
-    public List<Role> getRoles() {
+    public List<Project> getProjects() {
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(ROLES_URL))
+                .uri(URI.create(PROJECTS_URL))
                 .header("Accept", "application/json")
                 .build();
 
@@ -32,33 +32,34 @@ public class RoleService {
                 String responseBody = response.body();
                 ObjectMapper mapper = new ObjectMapper();
                 JsonNode rootNode = mapper.readTree(responseBody);
-                List<Role> roles = new ArrayList<>();
+                List<Project> projects = new ArrayList<>();
 
                 for (JsonNode node : rootNode) {
-                    Role role = new Role();
-                    role.setId(node.get("id").asText());
-                    role.setName(node.get("nombre").asText());
-                    role.setExperience(node.get("experiencia").asText());
+                    Project project = new Project();
+                    project.setId(node.get("id").asText());
+                    project.setName(node.get("nombre").asText());
+                    project.setDescription(node.get("descripcion").asText());
 
-                    roles.add(role);
+                    projects.add(project);
                 }
 
-                return roles;
+                return projects;
             } else {
-                System.err.println("Error cargando roles: " + response.statusCode());
+                // Handle non-200 responses
+                System.err.println("Failed to fetch projects: " + response.statusCode());
                 return List.of();
             }
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
-            return List.of();
+            return List.of(); // Return an empty list in case of an error
         }
     }
 
-    public Role getRole(String role_id) {
-        List<Role> roles = getRoles();
-        for (Role role : roles) {
-            if (role.getId().equals(role_id)) {
-                return role;
+    public Project getProject(String project_id) {
+        List<Project> projects = getProjects();
+        for (Project project : projects) {
+            if (project.getId().equals(project_id)) {
+                return project;
             }
         }
         return null;

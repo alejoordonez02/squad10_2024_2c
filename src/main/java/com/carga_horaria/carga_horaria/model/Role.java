@@ -2,6 +2,10 @@ package com.carga_horaria.carga_horaria.model;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -21,8 +25,7 @@ public class Role {
 
 // attributes
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String id;
 
     @Column(name = "name")
     private String name;
@@ -31,6 +34,7 @@ public class Role {
     private String experience;
 
     @OneToMany(mappedBy = "role", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonBackReference
     private List<Employee> employees = new ArrayList<Employee>();
 
 // init
@@ -38,7 +42,7 @@ public class Role {
     }
 
 // getters
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
@@ -55,7 +59,7 @@ public class Role {
     }
 
 // setters
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -69,6 +73,11 @@ public class Role {
 
     public void setEmployees(List<Employee> employees) {
         this.employees = employees;
+    }
+
+// putters
+    public void addEmployee(Employee employee) {
+        employees.add(employee);
     }
 
 }
