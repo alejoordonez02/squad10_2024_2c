@@ -1,8 +1,12 @@
 package com.carga_horaria.carga_horaria.service;
 
 import com.carga_horaria.carga_horaria.model.Project;
+import com.carga_horaria.carga_horaria.model.Employee;
+import com.carga_horaria.carga_horaria.model.Task;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -15,6 +19,12 @@ import java.util.List;
 
 @Service
 public class ProjectService {
+
+    @Autowired
+    private EmployeeService employeeService;
+
+    @Autowired
+    private TaskService taskService;
 
     private static final String PROJECTS_URL = "https://anypoint.mulesoft.com/mocking/api/v1/sources/exchange/assets/32c8fe38-22a6-4fbb-b461-170dfac937e4/proyectos-api/1.0.0/m/proyectos";
 
@@ -63,6 +73,10 @@ public class ProjectService {
             }
         }
         return null;
+    }
+
+    public List<Employee> getEmployees(String project_id) {
+        return taskService.getEmployees(project_id);
     }
 
 }

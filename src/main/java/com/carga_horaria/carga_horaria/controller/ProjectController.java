@@ -1,6 +1,7 @@
 package com.carga_horaria.carga_horaria.controller;
 
 import com.carga_horaria.carga_horaria.model.Project;
+import com.carga_horaria.carga_horaria.model.Employee;
 import com.carga_horaria.carga_horaria.service.ProjectService;
 
 import java.util.List;
@@ -23,6 +24,11 @@ public class ProjectController {
     @GetMapping
     public ResponseEntity<List<Project>> getProjects() {
         return ResponseEntity.ok(projectService.getProjects());
+    }
+
+    @GetMapping("/{project_id}/employees")
+    public ResponseEntity<List<Employee>> getEmployees(@PathVariable String project_id) {
+        return ResponseEntity.ok(projectService.getEmployees(project_id));
     }
 
 }

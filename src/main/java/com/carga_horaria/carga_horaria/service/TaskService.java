@@ -1,7 +1,6 @@
 package com.carga_horaria.carga_horaria.service;
 
 import com.carga_horaria.carga_horaria.model.Task;
-import com.carga_horaria.carga_horaria.model.Project;
 import com.carga_horaria.carga_horaria.model.Employee;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -21,10 +20,7 @@ import java.util.List;
 public class TaskService {
 
     @Autowired
-    ProjectService projectService;
-
-    @Autowired
-    EmployeeService employeeService;
+    private EmployeeService employeeService;
 
     private static final String TASKS_URL = "https://anypoint.mulesoft.com/mocking/api/v1/sources/exchange/assets/32c8fe38-22a6-4fbb-b461-170dfac937e4/tareas-api/1.0.0/m/tareas";
 
@@ -73,6 +69,22 @@ public class TaskService {
             }
         }
         return null;
+    }
+
+    public List<Employee> getEmployees(String project_id) {
+        List<Task> tasks = getTasks();
+        List<String> employee_ids = new ArrayList<>();
+        List<Employee> employees = new ArrayList<>();
+        for (Task task : tasks) {
+            String assignee_id = task.getAssigneeId();
+            if (task.getProjectId().equals(project_id) &&
+                !employee_ids.contains(assignee_id)) {
+                    employee_ids.add(assignee_id);
+                    Employee employee = employeeService.getEmployee(assignee_id);
+                    employees.add(employee);
+            }
+        }
+        return employees;
     }
 
 }
