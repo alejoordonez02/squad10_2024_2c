@@ -14,4 +14,7 @@ public interface WorkLogRepository extends JpaRepository<WorkLog, Long> {
     List<WorkLog> findWorkLog(@Param("employeeId") String employeeId, 
                               @Param("year") int year, 
                               @Param("month") int month);
+    @Query("SELECT w FROM WorkLog w WHERE YEAR(w.date) = :year AND MONTH(w.date) = :month")
+    List<WorkLog> findWorkLog(@Param("year") int year, 
+                              @Param("month") int month);
 }
