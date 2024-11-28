@@ -1,11 +1,4 @@
-# FROM openjdk:23
-# COPY target/carga-horaria-0.0.1-SNAPSHOT.jar carga-horaria.jar
-# ENTRYPOINT ["java", "-jar", "carga-horaria.jar"]
-
-
 # Etapa de construcción: Usar una imagen base con Maven preinstalado
-# FROM maven:3.9-openjdk-17 AS builder
-# FROM maven:3.9-eclipse-temurin-17 AS builder
 FROM maven:3.9-eclipse-temurin-23 AS builder
 
 # Establecer el directorio de trabajo
