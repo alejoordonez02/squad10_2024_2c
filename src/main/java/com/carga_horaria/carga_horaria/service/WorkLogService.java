@@ -3,10 +3,13 @@ package com.carga_horaria.carga_horaria.service;
 import com.carga_horaria.carga_horaria.model.WorkLog;
 import com.carga_horaria.carga_horaria.model.Employee;
 import com.carga_horaria.carga_horaria.model.Task;
+import com.carga_horaria.carga_horaria.model.Role;
 import com.carga_horaria.carga_horaria.repository.WorkLogRepository;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +23,9 @@ public class WorkLogService {
     private EmployeeService employeeService;
 
     @Autowired
+    private RoleService roleService;
+
+    @Autowired
     private TaskService taskService;
 
     private double getTotalHours(List<WorkLog> worklogs) {
@@ -28,6 +34,14 @@ public class WorkLogService {
             totalHours += worklog.getHours();
         }
         return totalHours;
+    }
+
+    public List<WorkLog> getWorkLogs() {
+        return workLogRepository.findAll();
+    }
+
+    public List<WorkLog> getWorkLogs(int year, int month) {
+        return workLogRepository.findWorkLog(year, month);
     }
 
     public double getWorkedHours(String employee_id, int year, int month) {
@@ -44,6 +58,19 @@ public class WorkLogService {
         workLog.setDate(date);
         workLog.setEmployeeId(employee_id);
         return workLogRepository.save(workLog);
+    }
+
+    public double getWorkedHours(String project_id, String role_name, String role_experience, int year, int month) {
+        List<String> employeeIds = roleService.getEmployeeIds(role_name, role_experience);
+        List<String> taskIds = taskService.getTasks(project_id, employeeIds).stream().map(Task::getId).collect(Collectors.toList());
+        List<WorkLog> workLogs = getWorkLogs(year, month);
+        double totalHours = 0;
+        for (WorkLog workLog : workLogs) {
+            if (taskIds.contains(workLog.getTaskId())) {
+                totalHours += workLog.getHours();
+            }
+        }
+        return totalHours;
     }
 
 }

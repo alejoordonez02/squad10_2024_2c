@@ -1,8 +1,11 @@
 package com.carga_horaria.carga_horaria.service;
 
 import com.carga_horaria.carga_horaria.model.Role;
+import com.carga_horaria.carga_horaria.model.Employee;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -17,6 +20,9 @@ import java.util.List;
 public class RoleService {
 
     private static final String ROLES_URL = "https://anypoint.mulesoft.com/mocking/api/v1/sources/exchange/assets/32c8fe38-22a6-4fbb-b461-170dfac937e4/roles-api/1.0.0/m/roles";
+
+    @Autowired
+    EmployeeService employeeService;
 
     public List<Role> getRoles() {
         HttpClient client = HttpClient.newHttpClient();
@@ -62,6 +68,31 @@ public class RoleService {
             }
         }
         return null;
+    }
+
+    public Role getRole(String name, String experience) {
+        List<Role> roles = getRoles();
+        for (Role role : roles) {
+            if (role.getName().equals(name) && role.getExperience().equals(experience)) {
+                return role;
+            }
+        }
+        return null;
+    }
+
+    public List<String> getEmployeeIds(String name, String experience) {
+        List<Role> roles = getRoles();
+        for (Role role : roles) {
+            if (role.getName().equals(name) && role.getExperience().equals(experience)) {
+                return role.getEmployeeIds();
+            }
+        }
+        return List.of();
+    }
+
+    public List<Employee> getEmployees(String role_id) {
+        Role role = getRole(role_id);
+        return employeeService.getEmployees(role.getEmployeeIds());
     }
 
 }

@@ -71,4 +71,16 @@ public class EmployeeService {
         return null;
     }
 
+    public List<Employee> getEmployees(List<String> employee_ids) {
+        // esta forma de filtrar es ineficiente, pero peor sería hacer múltiples requests a la API de recursos...
+        List<Employee> employees = getEmployees();
+        List<Employee> filteredEmployees = new ArrayList<>();
+        for (Employee employee : employees) {
+            if (employee_ids.contains(employee.getId())) {
+                filteredEmployees.add(employee);
+            }
+        }
+        return filteredEmployees;
+    }
+
 }

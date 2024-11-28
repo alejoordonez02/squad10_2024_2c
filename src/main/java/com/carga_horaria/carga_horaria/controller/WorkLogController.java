@@ -41,4 +41,14 @@ public class WorkLogController {
         return ResponseEntity.ok(workLogService.addWorkLog(employee_id, task_id, hours, year, month, day));
     }
 
+    @GetMapping("/{proyect_id}/{role_name}/{role_experience}/{year}-{month}")
+    // Obtener el total de horas trabajadas por un rol con un name y experiencia específicos en un proyecto, discriminada por tarea
+    public ResponseEntity<Double> getWorkedHours(@PathVariable String project_id,
+                                                 @PathVariable String role_name,
+                                                 @PathVariable String role_experience,
+                                                 @PathVariable int year,
+                                                 @PathVariable int month) {
+        return ResponseEntity.ok(workLogService.getWorkedHours(project_id, role_name, role_experience, year, month));
+    }   
+
 }
