@@ -34,6 +34,7 @@ public class WorkLogController {
     }
 
     @GetMapping("/employee/{employee_id}/hours/week")
+    // Registrar las horas de trabajo de un empleado en un rango de dias especifico
     public ResponseEntity<Double> getWorkedHoursInWeek(
         @PathVariable String employee_id,
         @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
