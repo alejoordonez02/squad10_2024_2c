@@ -15,9 +15,13 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Arrays;
 import java.util.stream.Collectors;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+
 
 public class WorkLogServiceTest {
 
@@ -83,6 +87,139 @@ public class WorkLogServiceTest {
         double totalHours = workLogService.getWorkedHours(projectId, roleName, roleExperience, year, month);
 
         assertEquals(8.0, totalHours);
+    }
+
+    @Test
+    void testGetWorkedHoursInWeek() {
+        String employeeId = "E001";
+        LocalDate startDate = LocalDate.of(2024, 11, 1); 
+        LocalDate endDate = LocalDate.of(2024, 11, 7); 
+        WorkLog workLog1 = new WorkLog();
+        workLog1.setHours(8);
+        workLog1.setDate(LocalDate.of(2024, 11, 2)); 
+
+        WorkLog workLog2 = new WorkLog();
+        workLog2.setHours(7);
+        workLog2.setDate(LocalDate.of(2024, 11, 5)); 
+
+        List<WorkLog> workLogs = Arrays.asList(workLog1, workLog2);
+
+        when(workLogRepository.findWorkLogsByEmployeeAndDateRange(employeeId, startDate, endDate))
+                .thenReturn(workLogs);
+
+        double totalHours = workLogService.getWorkedHoursInWeek(employeeId, startDate, endDate);
+
+        assertEquals(15.0, totalHours, "Las horas trabajadas en la semana deberían ser 15.0");
+        verify(workLogRepository, times(1)).findWorkLogsByEmployeeAndDateRange(employeeId, startDate, endDate);
+    }
+
+    @Test
+    void testGetWorkedHoursInWeek_WithLogs_ReturnsCorrectTotal() {
+        LocalDate startDate = LocalDate.of(2024, 11, 1); 
+        LocalDate endDate = LocalDate.of(2024, 11, 7);   
+
+        WorkLog log1 = new WorkLog();
+        log1.setEmployeeId("employee1");
+        log1.setDate(LocalDate.of(2024, 11, 2));
+        log1.setHours(5);
+
+        WorkLog log2 = new WorkLog();
+        log2.setEmployeeId("employee1");
+        log2.setDate(LocalDate.of(2024, 11, 4));
+        log2.setHours(3);
+
+        List<WorkLog> workLogs = Arrays.asList(log1, log2);
+
+        when(workLogRepository.findWorkLogsByEmployeeAndDateRange("employee1", startDate, endDate)).thenReturn(workLogs);
+
+        double totalHours = workLogService.getWorkedHoursInWeek("employee1", startDate, endDate);
+
+        assertEquals(8.0, totalHours);
+    }
+
+    @Test
+    void testGetWorkedHoursInWeek_NoLogs_ReturnsZero() {
+        LocalDate startDate = LocalDate.of(2024, 11, 1);
+        LocalDate endDate = LocalDate.of(2024, 11, 7);
+
+        when(workLogRepository.findWorkLogsByEmployeeAndDateRange("employee1", startDate, endDate)).thenReturn(Arrays.asList());
+
+        double totalHours = workLogService.getWorkedHoursInWeek("employee1", startDate, endDate);
+
+        assertEquals(0.0, totalHours);
+    }
+
+    @Test
+    void testGetWorkedHoursInWeek_MultipleLogs_ReturnsCorrectTotal() {
+
+        LocalDate startDate = LocalDate.of(2024, 11, 1);
+        LocalDate endDate = LocalDate.of(2024, 11, 7);
+
+        WorkLog log1 = new WorkLog();
+        log1.setEmployeeId("employee1");
+        log1.setDate(LocalDate.of(2024, 11, 2));
+        log1.setHours(5);
+
+        WorkLog log2 = new WorkLog();
+        log2.setEmployeeId("employee1");
+        log2.setDate(LocalDate.of(2024, 11, 4));
+        log2.setHours(3);
+
+        WorkLog log3 = new WorkLog();
+        log3.setEmployeeId("employee1");
+        log3.setDate(LocalDate.of(2024, 11, 5));
+        log3.setHours(2);
+
+        List<WorkLog> workLogs = Arrays.asList(log1, log2, log3);
+
+        when(workLogRepository.findWorkLogsByEmployeeAndDateRange("employee1", startDate, endDate)).thenReturn(workLogs);
+
+        double totalHours = workLogService.getWorkedHoursInWeek("employee1", startDate, endDate);
+
+        assertEquals(10.0, totalHours);
+    }
+
+    @Test
+    void testGetWorkedHoursInWeek_SingleDay_ReturnsCorrectTotal() {
+        LocalDate startDate = LocalDate.of(2024, 11, 4);
+        LocalDate endDate = LocalDate.of(2024, 11, 4);
+
+        WorkLog log = new WorkLog();
+        log.setEmployeeId("employee1");
+        log.setDate(LocalDate.of(2024, 11, 4));
+        log.setHours(8);
+
+        when(workLogRepository.findWorkLogsByEmployeeAndDateRange("employee1", startDate, endDate))
+                .thenReturn(Arrays.asList(log));
+
+        double totalHours = workLogService.getWorkedHoursInWeek("employee1", startDate, endDate);
+
+        assertEquals(8.0, totalHours);
+    }
+
+    @Test
+    void testGetWorkedHoursInWeek_LimitDates_ReturnsCorrectTotal() {
+        LocalDate startDate = LocalDate.of(2024, 11, 3);
+        LocalDate endDate = LocalDate.of(2024, 11, 9);   
+
+        WorkLog log1 = new WorkLog();
+        log1.setEmployeeId("employee1");
+        log1.setDate(LocalDate.of(2024, 11, 3));
+        log1.setHours(4);
+
+        WorkLog log2 = new WorkLog();
+        log2.setEmployeeId("employee1");
+        log2.setDate(LocalDate.of(2024, 11, 7));
+        log2.setHours(6);
+
+        List<WorkLog> workLogs = Arrays.asList(log1, log2);
+
+        when(workLogRepository.findWorkLogsByEmployeeAndDateRange("employee1", startDate, endDate))
+                .thenReturn(workLogs);
+
+        double totalHours = workLogService.getWorkedHoursInWeek("employee1", startDate, endDate);
+
+        assertEquals(10.0, totalHours);
     }
 
 }

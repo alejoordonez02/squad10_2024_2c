@@ -4,6 +4,9 @@ import com.carga_horaria.carga_horaria.model.WorkLog;
 import com.carga_horaria.carga_horaria.service.WorkLogService;
 
 import jakarta.websocket.server.PathParam;
+import org.springframework.web.bind.annotation.RequestParam; 
+import org.springframework.format.annotation.DateTimeFormat;
+import java.time.LocalDate; 
 
 import java.util.List;
 
@@ -28,6 +31,14 @@ public class WorkLogController {
                                              @PathVariable int year,
                                              @PathVariable int month) {
         return ResponseEntity.ok(workLogService.getWorkedHours(employee_id, year, month));
+    }
+
+    @GetMapping("/employee/{employee_id}/hours/week")
+    public ResponseEntity<Double> getWorkedHoursInWeek(
+        @PathVariable String employee_id,
+        @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
+        @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate) {
+        return ResponseEntity.ok(workLogService.getWorkedHoursInWeek(employee_id, startDate, endDate));
     }
 
     @PostMapping("/{employee_id}/{task_id}/{hours}/{year}-{month}-{day}")

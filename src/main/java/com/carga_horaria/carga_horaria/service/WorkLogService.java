@@ -72,6 +72,11 @@ public class WorkLogService {
         }
         return totalHours;
     }
+    
+    public double getWorkedHoursInWeek(String employee_id, LocalDate startDate, LocalDate endDate) {
+        List<WorkLog> workLogs = workLogRepository.findWorkLogsByEmployeeAndDateRange(employee_id, startDate, endDate);
+        return getTotalHours(workLogs);
+    }
 
 }
 
