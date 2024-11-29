@@ -115,8 +115,9 @@ public class WorkLogServiceTest {
 
     @Test
     void testGetWorkedHoursInWeek_WithLogs_ReturnsCorrectTotal() {
-        LocalDate startDate = LocalDate.of(2024, 11, 1); 
-        LocalDate endDate = LocalDate.of(2024, 11, 7);   
+        // Rango de fechas
+        LocalDate startDate = LocalDate.of(2024, 11, 1); // 1 de noviembre
+        LocalDate endDate = LocalDate.of(2024, 11, 7);   // 7 de noviembre 
 
         WorkLog log1 = new WorkLog();
         log1.setEmployeeId("employee1");
@@ -139,8 +140,9 @@ public class WorkLogServiceTest {
 
     @Test
     void testGetWorkedHoursInWeek_NoLogs_ReturnsZero() {
-        LocalDate startDate = LocalDate.of(2024, 11, 1);
-        LocalDate endDate = LocalDate.of(2024, 11, 7);
+        // Rango de fechas
+        LocalDate startDate = LocalDate.of(2024, 11, 1); // 1 de noviembre
+        LocalDate endDate = LocalDate.of(2024, 11, 7);   // 7 de noviembre
 
         when(workLogRepository.findWorkLogsByEmployeeAndDateRange("employee1", startDate, endDate)).thenReturn(Arrays.asList());
 
@@ -151,9 +153,9 @@ public class WorkLogServiceTest {
 
     @Test
     void testGetWorkedHoursInWeek_MultipleLogs_ReturnsCorrectTotal() {
-
-        LocalDate startDate = LocalDate.of(2024, 11, 1);
-        LocalDate endDate = LocalDate.of(2024, 11, 7);
+        // Rango de fechas
+        LocalDate startDate = LocalDate.of(2024, 11, 1); // 1 de noviembre
+        LocalDate endDate = LocalDate.of(2024, 11, 7);   // 7 de noviembre
 
         WorkLog log1 = new WorkLog();
         log1.setEmployeeId("employee1");
@@ -181,6 +183,7 @@ public class WorkLogServiceTest {
 
     @Test
     void testGetWorkedHoursInWeek_SingleDay_ReturnsCorrectTotal() {
+        //Fecha Unica
         LocalDate startDate = LocalDate.of(2024, 11, 4);
         LocalDate endDate = LocalDate.of(2024, 11, 4);
 
@@ -199,8 +202,9 @@ public class WorkLogServiceTest {
 
     @Test
     void testGetWorkedHoursInWeek_LimitDates_ReturnsCorrectTotal() {
-        LocalDate startDate = LocalDate.of(2024, 11, 3);
-        LocalDate endDate = LocalDate.of(2024, 11, 9);   
+        // Rango de fechas de la semana
+        LocalDate startDate = LocalDate.of(2024, 11, 3); // Domingo
+        LocalDate endDate = LocalDate.of(2024, 11, 9);   // Sábado
 
         WorkLog log1 = new WorkLog();
         log1.setEmployeeId("employee1");
