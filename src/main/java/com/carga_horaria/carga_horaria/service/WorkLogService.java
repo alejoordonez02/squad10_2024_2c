@@ -73,5 +73,13 @@ public class WorkLogService {
         return totalHours;
     }
 
+    public double getWorkedHours(String employee_id, int year1, int month1, int day1, int year2, int month2, int day2) {
+        LocalDate date1 = LocalDate.of(year1, month1, day1);
+        LocalDate date2 = LocalDate.of(year2, month2, day2);
+        List<WorkLog> workLogs = workLogRepository.findWorkLog(employee_id, date1, date2);
+        double totalHours = getTotalHours(workLogs);
+        return totalHours;
+    }
+
 }
 
