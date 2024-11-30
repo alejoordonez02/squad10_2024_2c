@@ -49,6 +49,18 @@ public class WorkLogController {
                                                  @PathVariable int year,
                                                  @PathVariable int month) {
         return ResponseEntity.ok(workLogService.getWorkedHours(project_id, role_name, role_experience, year, month));
-    }   
+    }
+
+    @GetMapping("/{employee_id}/from/{year1}-{month1}-{day1}/to/{year2}-{month2}-{day2}")
+    // Obtener el total de horas trabajadas por un empleado en un periodo de tiempo
+    public ResponseEntity<Double> getWorkedHours(@PathVariable String employee_id,
+                                                 @PathVariable int year1,
+                                                 @PathVariable int month1,
+                                                 @PathVariable int day1,
+                                                 @PathVariable int year2,
+                                                 @PathVariable int month2,
+                                                 @PathVariable int day2) {
+        return ResponseEntity.ok(workLogService.getWorkedHours(employee_id, year1, month1, day1, year2, month2, day2));
+    }
 
 }
