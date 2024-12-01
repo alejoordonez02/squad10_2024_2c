@@ -80,19 +80,4 @@ public class RoleService {
         return null;
     }
 
-    public List<String> getEmployeeIds(String name, String experience) {
-        List<Role> roles = getRoles();
-        for (Role role : roles) {
-            if (role.getName().equals(name) && role.getExperience().equals(experience)) {
-                return role.getEmployeeIds();
-            }
-        }
-        return List.of();
-    }
-
-    public List<Employee> getEmployees(String role_id) {
-        Role role = getRole(role_id);
-        return employeeService.getEmployees(role.getEmployeeIds());
-    }
-
 }

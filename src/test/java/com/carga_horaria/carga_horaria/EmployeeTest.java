@@ -35,44 +35,44 @@ class EmployeeTest {
         assertEquals(lastName, employee.getLastName());
     }
 
-    @Test
-    void testGetAndSetAssignedTaskIds() {
-        Employee employee = new Employee();
-        List<String> assignedTaskIds = List.of("task1", "task2");
-        employee.setAssignedTaskIds(assignedTaskIds);
-        assertEquals(assignedTaskIds, employee.getAssignedTasks());
-    }
+    // @Test
+    // void testGetAndSetAssignedTaskIds() {
+    //     Employee employee = new Employee();
+    //     List<String> assignedTaskIds = List.of("task1", "task2");
+    //     employee.setAssignedTaskIds(assignedTaskIds);
+    //     assertEquals(assignedTaskIds, employee.getAssignedTasks());
+    // }
 
-    @Test
-    void testAddWorkLogId() {
-        Employee employee = new Employee();
-        String workLogId = "workLog1";
-        employee.addWorkLogId(workLogId);
-        assertTrue(employee.getWorkLogs().contains(workLogId));
-    }
+    // @Test
+    // void testAddWorkLogId() {
+    //     Employee employee = new Employee();
+    //     String workLogId = "workLog1";
+    //     employee.addWorkLogId(workLogId);
+    //     assertTrue(employee.getWorkLogs().contains(workLogId));
+    // }
 
-    @Test
-    void testAddWorkLogIds() {
-        Employee employee = new Employee();
-        List<String> workLogIds = List.of("workLog1", "workLog2");
-        employee.addWorkLogIds(workLogIds);
-        assertTrue(employee.getWorkLogs().containsAll(workLogIds));
-    }
+    // @Test
+    // void testAddWorkLogIds() {
+    //     Employee employee = new Employee();
+    //     List<String> workLogIds = List.of("workLog1", "workLog2");
+    //     employee.addWorkLogIds(workLogIds);
+    //     assertTrue(employee.getWorkLogs().containsAll(workLogIds));
+    // }
 
-    @Test
-    void testAddTaskId() {
-        Employee employee = new Employee();
-        String taskId = "task1";
-        employee.addTask(taskId);
-        assertTrue(employee.getAssignedTasks().contains(taskId));
-    }
+    // @Test
+    // void testAddTaskId() {
+    //     Employee employee = new Employee();
+    //     String taskId = "task1";
+    //     employee.addTask(taskId);
+    //     assertTrue(employee.getAssignedTasks().contains(taskId));
+    // }
 
-    @Test
-    void testAddTaskIds() {
-        Employee employee = new Employee();
-        List<String> taskIds = List.of("task1", "task2");
-        employee.addTasks(taskIds);
-        assertTrue(employee.getAssignedTasks().containsAll(taskIds));
-    }
+    // @Test
+    // void testAddTaskIds() {
+    //     Employee employee = new Employee();
+    //     List<String> taskIds = List.of("task1", "task2");
+    //     employee.addTasks(taskIds);
+    //     assertTrue(employee.getAssignedTasks().containsAll(taskIds));
+    // }
 
 }

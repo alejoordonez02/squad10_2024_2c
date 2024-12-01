@@ -62,12 +62,26 @@ public class WorkLogService {
     }
 
     public double getWorkedHours(String project_id, String role_name, String role_experience, int year, int month) {
-        List<String> employeeIds = roleService.getEmployeeIds(role_name, role_experience);
+        String roleId = roleService.getRole(role_name, role_experience).getId();
+        List<String> employeeIds = employeeService.getEmployees(roleId).stream().map(Employee::getId).collect(Collectors.toList());
         List<String> taskIds = taskService.getTasks(project_id, employeeIds).stream().map(Task::getId).collect(Collectors.toList());
         List<WorkLog> workLogs = getWorkLogs(year, month);
         double totalHours = 0;
         for (WorkLog workLog : workLogs) {
             if (taskIds.contains(workLog.getTaskId())) {
+                totalHours += workLog.getHours();
+            }
+        }
+        return totalHours;
+    }
+
+    public double getWorkedHours(String role_name, String role_experience, int year, int month) {
+        String roleId = roleService.getRole(role_name, role_experience).getId();
+        List<String> employeeIds = employeeService.getEmployees(roleId).stream().map(Employee::getId).collect(Collectors.toList());
+        List<WorkLog> workLogs = getWorkLogs(year, month);
+        double totalHours = 0;
+        for (WorkLog workLog : workLogs) {
+            if (employeeIds.contains(workLog.getEmployeeId())) {
                 totalHours += workLog.getHours();
             }
         }
