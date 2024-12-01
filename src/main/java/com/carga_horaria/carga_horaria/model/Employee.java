@@ -38,9 +38,9 @@ public class Employee {
 
     private String role_id;
 
-    private List<String> workLog_ids = new ArrayList<>();
+    // private List<String> workLog_ids = new ArrayList<>();
 
-    private List<String> assignedTask_ids = new ArrayList<>();
+    // private List<String> assignedTask_ids = new ArrayList<>();
 
 // init
     public Employee() {
@@ -63,17 +63,17 @@ public class Employee {
         return lastName;
     }
 
-    public String getRole() {
+    public String getRoleId() {
         return role_id;
     }
 
-    public List<String> getWorkLogs() {
-        return workLog_ids;
-    }
+    // public List<String> getWorkLogs() {
+    //     return workLog_ids;
+    // }
 
-    public List<String> getAssignedTasks() {
-        return assignedTask_ids;
-    }
+    // public List<String> getAssignedTasks() {
+    //     return assignedTask_ids;
+    // }
 
 // setters
     public void setId(String id) {
@@ -96,29 +96,29 @@ public class Employee {
         this.role_id = role_id;
     }
 
-    public void setWorkLogIds(List<String> workLog_ids) {
-        this.workLog_ids = workLog_ids;
-    }
+    // public void setWorkLogIds(List<String> workLog_ids) {
+    //     this.workLog_ids = workLog_ids;
+    // }
 
-    public void setAssignedTaskIds(List<String> assignedTask_ids) {
-        this.assignedTask_ids = assignedTask_ids;
-    }
+    // public void setAssignedTaskIds(List<String> assignedTask_ids) {
+    //     this.assignedTask_ids = assignedTask_ids;
+    // }
 
 // putters
-    public void addWorkLogId(String workLog_id) {
-        this.workLog_ids.add(workLog_id);
-    }
+    // public void addWorkLogId(String workLog_id) {
+    //     this.workLog_ids.add(workLog_id);
+    // }
 
-    public void addWorkLogIds(List<String> workLog_ids) {
-        this.workLog_ids.addAll(workLog_ids);
-    }
+    // public void addWorkLogIds(List<String> workLog_ids) {
+    //     this.workLog_ids.addAll(workLog_ids);
+    // }
 
-    public void addTask(String task_id) {
-        this.assignedTask_ids.add(task_id);
-    }
+    // public void addTask(String task_id) {
+    //     this.assignedTask_ids.add(task_id);
+    // }
 
-    public void addTasks(List<String> task_ids) {
-        this.assignedTask_ids.addAll(task_ids);
-    }
+    // public void addTasks(List<String> task_ids) {
+    //     this.assignedTask_ids.addAll(task_ids);
+    // }
 
 }

@@ -23,28 +23,28 @@ public class ProjectTest {
         assertEquals(description, project.getDescription());
     }
 
-    @Test
-    void testGetAndSetTaskIds() {
-        Project project = new Project();
-        List<String> taskIds = List.of("task1", "task2");
-        project.setTaskIds(taskIds);
-        assertEquals(taskIds, project.getTaskIds());
-    }
+    // @Test
+    // void testGetAndSetTaskIds() {
+    //     Project project = new Project();
+    //     List<String> taskIds = List.of("task1", "task2");
+    //     project.setTaskIds(taskIds);
+    //     assertEquals(taskIds, project.getTaskIds());
+    // }
 
-    @Test
-    void testAddTaskId() {
-        Project project = new Project();
-        String taskId = "task1";
-        project.addTaskId(taskId);
-        assertTrue(project.getTaskIds().contains(taskId));
-    }
+    // @Test
+    // void testAddTaskId() {
+    //     Project project = new Project();
+    //     String taskId = "task1";
+    //     project.addTaskId(taskId);
+    //     assertTrue(project.getTaskIds().contains(taskId));
+    // }
 
-    @Test
-    void testAddTaskIds() {
-        Project project = new Project();
-        List<String> taskIds = List.of("task1", "task2");
-        project.addTaskIds(taskIds);
-        assertTrue(project.getTaskIds().containsAll(taskIds));
-    }
+    // @Test
+    // void testAddTaskIds() {
+    //     Project project = new Project();
+    //     List<String> taskIds = List.of("task1", "task2");
+    //     project.addTaskIds(taskIds);
+    //     assertTrue(project.getTaskIds().containsAll(taskIds));
+    // }
 
 }

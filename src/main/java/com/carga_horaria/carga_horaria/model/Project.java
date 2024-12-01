@@ -28,7 +28,7 @@ public class Project {
     @Column(name = "description")
     private String description;
 
-    private List<String> task_ids = new ArrayList<>();
+    // private List<String> task_ids = new ArrayList<>();
 
 // init
     public Project() {
@@ -47,9 +47,9 @@ public class Project {
         return description;
     }
 
-    public List<String> getTaskIds() {
-        return task_ids;
-    }
+    // public List<String> getTaskIds() {
+    //     return task_ids;
+    // }
 
 // setters
     public void setId(String id) {
@@ -64,17 +64,17 @@ public class Project {
         this.description = description;
     }
 
-    public void setTaskIds(List<String> task_ids) {
-        this.task_ids = task_ids;
-    }
+    // public void setTaskIds(List<String> task_ids) {
+    //     this.task_ids = task_ids;
+    // }
 
 // putters
-    public void addTaskId(String task_id) {
-        this.task_ids.add(task_id);
-    }
+    // public void addTaskId(String task_id) {
+    //     this.task_ids.add(task_id);
+    // }
 
-    public void addTaskIds(List<String> task_ids) {
-        this.task_ids.addAll(task_ids);
-    }
+    // public void addTaskIds(List<String> task_ids) {
+    //     this.task_ids.addAll(task_ids);
+    // }
 
 }

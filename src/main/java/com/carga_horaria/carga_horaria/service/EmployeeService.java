@@ -83,4 +83,15 @@ public class EmployeeService {
         return filteredEmployees;
     }
 
+    public List<Employee> getEmployees(String role_id) {
+        List<Employee> employees = getEmployees();
+        List<Employee> filteredEmployees = new ArrayList<>();
+        for (Employee employee : employees) {
+            if (employee.getRoleId().equals(role_id)) {
+                filteredEmployees.add(employee);
+            }
+        }
+        return filteredEmployees;
+    }
+
 }
