@@ -10,11 +10,13 @@ import jakarta.persistence.ManyToOne;
 import java.time.LocalDate;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class WorkLog {
 
 // attributes
+    @JsonIgnore
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -22,12 +24,14 @@ public class WorkLog {
     @Column(name = "hours")
     private double hours;
 
+    @JsonIgnore
     @Column(name = "task_id")
     private String task_id;
 
     @Column(name = "date")
     private LocalDate date;
 
+    @JsonIgnore
     @Column(name = "employee_id")
     private String employee_id;
 

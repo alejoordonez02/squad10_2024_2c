@@ -1,6 +1,7 @@
 package com.carga_horaria.carga_horaria.service;
 
 import com.carga_horaria.carga_horaria.model.WorkLog;
+import com.carga_horaria.carga_horaria.dto.WorkLogDTO;
 import com.carga_horaria.carga_horaria.model.Employee;
 import com.carga_horaria.carga_horaria.model.Task;
 import com.carga_horaria.carga_horaria.model.Role;
@@ -79,6 +80,15 @@ public class WorkLogService {
         List<WorkLog> workLogs = workLogRepository.findWorkLog(employee_id, date1, date2);
         double totalHours = getTotalHours(workLogs);
         return totalHours;
+    }
+
+    public List<WorkLogDTO> getWorkedHoursPerDay(String employee_id, int year1, int month1, int day1, int year2, int month2, int day2) {
+        LocalDate date1 = LocalDate.of(year1, month1, day1);
+        LocalDate date2 = LocalDate.of(year2, month2, day2);
+        List<WorkLog> workLogs = workLogRepository.findWorkLog(employee_id, date1, date2);
+        return workLogs.stream()
+               .map(workLog -> new WorkLogDTO(workLog.getHours(), workLog.getDate()))
+               .collect(Collectors.toList());
     }
 
 }

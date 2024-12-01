@@ -1,12 +1,10 @@
 package com.carga_horaria.carga_horaria.controller;
 
 import com.carga_horaria.carga_horaria.model.WorkLog;
+import com.carga_horaria.carga_horaria.dto.WorkLogDTO;
 import com.carga_horaria.carga_horaria.service.WorkLogService;
 
-import jakarta.websocket.server.PathParam;
-
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -61,6 +59,17 @@ public class WorkLogController {
                                                  @PathVariable int month2,
                                                  @PathVariable int day2) {
         return ResponseEntity.ok(workLogService.getWorkedHours(employee_id, year1, month1, day1, year2, month2, day2));
+    }
+
+    @GetMapping("/{employee_id}/from/{year1}-{month1}-{day1}/to/{year2}-{month2}-{day2}/per_day")
+    public ResponseEntity<List<WorkLogDTO>> getWorkedHoursPerDay(@PathVariable String employee_id,
+                                                 @PathVariable int year1,
+                                                 @PathVariable int month1,
+                                                 @PathVariable int day1,
+                                                 @PathVariable int year2,
+                                                 @PathVariable int month2,
+                                                 @PathVariable int day2) {
+        return ResponseEntity.ok(workLogService.getWorkedHoursPerDay(employee_id, year1, month1, day1, year2, month2, day2));
     }
 
 }
