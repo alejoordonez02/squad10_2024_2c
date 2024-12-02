@@ -80,7 +80,7 @@ public class WorkLogService {
     public List<WorkLogDTO> getWorkedHoursPerDay(String employee_id, LocalDate from, LocalDate to) {
         List<WorkLog> workLogs = workLogRepository.findWorkLog(employee_id, from, to);
         return workLogs.stream()
-               .map(workLog -> new WorkLogDTO(workLog.getHours(), workLog.getDate()))
+               .map(workLog -> new WorkLogDTO(workLog.getHours(), workLog.getTaskId(), workLog.getDate()))
                .collect(Collectors.toList());
     }
 
