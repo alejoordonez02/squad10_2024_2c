@@ -26,9 +26,4 @@ public class ProjectController {
         return ResponseEntity.ok(projectService.getProjects());
     }
 
-    @GetMapping("/{project_id}/employees")
-    public ResponseEntity<List<Employee>> getEmployees(@PathVariable String project_id) {
-        return ResponseEntity.ok(projectService.getEmployees(project_id));
-    }
-
 }

@@ -5,12 +5,9 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import java.time.LocalDate;
-
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 @Entity
 public class WorkLog {
@@ -24,28 +21,31 @@ public class WorkLog {
     @Column(name = "hours")
     private double hours;
 
-    @JsonIgnore
-    @Column(name = "task_id")
-    private String task_id;
+    @Column(name = "taskId")
+    private String taskId;
 
     @Column(name = "date")
+    @Schema(description = "Fecha del trabajo en formato ISO", example = "2024-12-01")
     private LocalDate date;
 
-    @JsonIgnore
-    @Column(name = "employee_id")
-    private String employee_id;
+    @Column(name = "employeeId")
+    private String employeeId;
 
 // init
     public WorkLog() {
     }
 
 // getters
+    public Long getId() {
+        return id;
+    }
+
     public double getHours() {
         return hours;
     }
 
     public String getTaskId() {
-        return task_id;
+        return taskId;
     }
 
     public LocalDate getDate() {
@@ -53,24 +53,31 @@ public class WorkLog {
     }
 
     public String getEmployeeId() {
-        return employee_id;
+        return employeeId;
     }
 
 // setters
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public void setHours(double hours) {
         this.hours = hours;
     }
 
-    public void setTaskId(String task_id) {
-        this.task_id = task_id;
+
+    public void setTaskId(String taskId) {
+        this.taskId = taskId;
     }
+
 
     public void setDate(LocalDate date) {
         this.date = date;
     }
 
-    public void setEmployeeId(String employee_id) {
-        this.employee_id = employee_id;
+
+    public void setEmployeeId(String employeeId) {
+        this.employeeId = employeeId;
     }
 
 }
