@@ -42,6 +42,17 @@ public class WorkLogController {
         return ResponseEntity.ok(workLogService.getWorkedHours(role_name, role_experience, year, month));
     }
 
+    @GetMapping("/projects/{project_id}")
+    @Operation(summary = "Obtener las horas trabajadas por rol en un proyecto")
+    public ResponseEntity<Double> getWorkedHours(
+            @RequestParam String role_name,
+            @RequestParam String role_experience,
+            @PathVariable String project_id,
+            @RequestParam int year,
+            @RequestParam int month) {
+        return ResponseEntity.ok(workLogService.getWorkedHours(role_name, role_experience, project_id, year, month));
+    }
+
     @GetMapping("/employees/{employee_id}")
     @Operation(summary = "Obtener las horas trabajadas por empleado en un mes")
     public ResponseEntity<Double> getWorkedHours(

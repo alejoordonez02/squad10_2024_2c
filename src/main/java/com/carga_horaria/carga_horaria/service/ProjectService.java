@@ -79,4 +79,8 @@ public class ProjectService {
         return taskService.getEmployees(project_id);
     }
 
+    public List<String> getEmployeeIds(String project_id) {
+        return taskService.getEmployeeIds(project_id);
+    }
+
 }

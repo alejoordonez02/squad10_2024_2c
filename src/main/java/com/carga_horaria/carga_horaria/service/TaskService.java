@@ -87,6 +87,19 @@ public class TaskService {
         return employees;
     }
 
+    public List<String> getEmployeeIds(String project_id) {
+        List<Task> tasks = getTasks();
+        List<String> employee_ids = new ArrayList<>();
+        for (Task task : tasks) {
+            String assignee_id = task.getAssigneeId();
+            if (task.getProjectId().equals(project_id) &&
+                !employee_ids.contains(assignee_id)) {
+                    employee_ids.add(assignee_id);
+            }
+        }
+        return employee_ids;
+    }
+
     public List<Task> getTasks(String project_id) {
         List<Task> tasks = getTasks();
         List<Task> projectTasks = new ArrayList<>();

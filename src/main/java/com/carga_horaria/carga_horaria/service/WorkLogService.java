@@ -71,6 +71,21 @@ public class WorkLogService {
         return totalHours;
     }
 
+    public double getWorkedHours(String role_name, String role_experience, String project_id, int year, int month) {
+        String roleId = roleService.getRole(role_name, role_experience).getId();
+        List<String> employeeIdsFilteredByProject = taskService.getEmployeeIds(project_id);
+        List<String> employeeIdsFilteredByRole = employeeService.getEmployees(roleId).stream().map(Employee::getId).collect(Collectors.toList());
+        List<WorkLog> workLogs = getWorkLogs(year, month);
+        double totalHours = 0;
+        for (WorkLog workLog : workLogs) {
+            if (employeeIdsFilteredByProject.contains(workLog.getEmployeeId()) &&
+                employeeIdsFilteredByRole.contains(workLog.getEmployeeId())) {
+                totalHours += workLog.getHours();
+            }
+        }
+        return totalHours;
+    }
+
     public double getWorkedHours(String employee_id, LocalDate from, LocalDate to) {
         List<WorkLog> workLogs = workLogRepository.findWorkLog(employee_id, from, to);
         double totalHours = getTotalHours(workLogs);
