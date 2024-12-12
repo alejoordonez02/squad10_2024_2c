@@ -6,7 +6,7 @@ import org.junit.runner.RunWith;
 
 @RunWith(Cucumber.class)
 @CucumberOptions(
-    features = "/src/test/java/com/carga_horaria/carga_horaria/resources",
+    features = "classpath:com/carga_horaria/carga_horaria/resources",
     glue = "com.carga_horaria.carga_horaria",  
     plugin = {"pretty", "html:target/cucumber-reports"}  
 )
