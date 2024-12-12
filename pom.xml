@@ -63,19 +63,19 @@
 		<dependency>
 			<groupId>io.cucumber</groupId>
 			<artifactId>cucumber-java</artifactId>
-			<version>7.13.0</version> 
+			<version>6.9.1</version> 
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>io.cucumber</groupId>
 			<artifactId>cucumber-spring</artifactId>
-			<version>7.13.0</version> 
+			<version>6.9.1</version> 
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>io.cucumber</groupId>
 			<artifactId>cucumber-junit</artifactId>
-			<version>7.13.0</version>
+			<version>6.9.1</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
@@ -94,10 +94,23 @@
 					<includes>
 						<include>**/*Test.class</include> 
 						<include>**/*Steps.class</include> 
+						<include>**/*CucumberTest.java</include> 
 					</includes>
 					<parallel>all</parallel>
 					<threadCount>4</threadCount> 
 				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>io.cucumber</groupId>
+				<artifactId>cucumber-maven-plugin</artifactId>
+				<version>6.9.1</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>run</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>
