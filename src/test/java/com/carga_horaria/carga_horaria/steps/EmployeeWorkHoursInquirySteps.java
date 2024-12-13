@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,6 +25,7 @@ public class EmployeeWorkHoursInquirySteps {
     private List<Project> projects = new ArrayList<>();
     private List<Task> tasks = new ArrayList<>();
     private static int taskIdCounter = 1;
+    private String errorMessage;
 
     @Autowired
     private WorkLogService workLogService;
@@ -92,6 +94,20 @@ public class EmployeeWorkHoursInquirySteps {
         } 
     }
 
+    @When("I try to request worked hours for the employee {string} with an incorrect date format {string} to {string}")
+    public void i_try_to_request_worked_hours_for_employee_with_incorrect_date_format(String employeeName, String startDate, String endDate) {
+        this.errorMessage = null; 
+        this.startDate = startDate;
+        this.endDate = endDate;
+        try {
+            LocalDate.parse(startDate);  
+            LocalDate.parse(endDate);     
+            employee = createEmployee(employeeName);  
+        } catch (DateTimeParseException e) {
+            this.errorMessage = "Invalid date format";
+        }
+    }
+
     @Then("the system should display the total hours worked by {string} for the period {string} to {string}")
     public void the_system_should_display_the_total_hours_worked_by_for_the_period_to(String expectedEmployeeName, String expectedStartDate, String expectedEndDate) {
         String employeeFullName = employee.getFirstName() + " " + employee.getLastName();
@@ -126,6 +142,13 @@ public class EmployeeWorkHoursInquirySteps {
         System.out.println("Total hours worked by " + employeeFullName + " from " + startDate + " to " + endDate + " is: " + totalWorkedHours);
     }
 
+    @Then("the system should display an error message saying {string}")
+    public void the_system_should_display_an_error_message_saying(String expectedErrorMessage) {
+        assertEquals(expectedErrorMessage, this.errorMessage, "Error message does not match");
+        if (this.errorMessage != null) {
+            System.out.println("Error: " + this.errorMessage);
+        }
+    }
 
 
 
