@@ -42,14 +42,18 @@ public class EmployeeWorkHoursInquirySteps {
     @Given("I am a operation manager in the system")
     public void i_am_a_operations_manager_in_the_system() {}
 
+    @And("the employee {string} has not logged any hours in the period {string} to {string}")
+    public void employee_that_not_have_worked_hours(String employeeName, String startDate, String endDate){
+        employee = createEmployee(employeeName);
+    }
+
     @When("I request the worked hours for the employee {string} from {string} to {string}")
     public void i_request_the_worked_hours_for_the_employee_from_to(String employeeName, String startDate, String endDate) {
         this.startDate = startDate;
         this.endDate = endDate;
-        employee = createEmployee("John Doe");
+        employee = createEmployee(employeeName);
         WorkLog workLog = createWorkLog(employee.getId(), 20, LocalDate.parse(startDate));
         workLogs.add(workLog);
-
         List<WorkLog> workLogsForEmployee = findWorkLogsForEmployeeOnProjectInRange(employee.getId(), startDate, endDate);
 
         for (WorkLog worklog : workLogsForEmployee) {
@@ -77,6 +81,17 @@ public class EmployeeWorkHoursInquirySteps {
         }
     }
 
+    @When("I request the worked hours from the employee {string} from {string} to {string}")
+    public void i_request_the_worked_hours_from_the_employee_from_to(String employeeName, String startDate, String endDate) {
+        this.startDate = startDate;
+        this.endDate = endDate;
+        List<WorkLog> workLogsForEmployee = findWorkLogsForEmployeeOnProjectInRange(employee.getId(), startDate, endDate);
+
+        for (WorkLog worklog : workLogsForEmployee) {
+            totalWorkedHours += worklog.getHours();
+        } 
+    }
+
     @Then("the system should display the total hours worked by {string} for the period {string} to {string}")
     public void the_system_should_display_the_total_hours_worked_by_for_the_period_to(String expectedEmployeeName, String expectedStartDate, String expectedEndDate) {
         String employeeFullName = employee.getFirstName() + " " + employee.getLastName();
@@ -99,6 +114,16 @@ public class EmployeeWorkHoursInquirySteps {
         assertTrue(totalWorkedHours > 0, "Total worked hours should be greater than zero");
         
         System.out.println("Total hours worked by " + employeeFullName + " on project " + projectName + " from " + startDate + " to " + endDate + " is: " + totalWorkedHours);
+    }
+    @Then("the system should display {int} hours worked for {string} in the period {string} to {string}")
+    public void the_system_should_display_zero_hours_for_employee_in_the_period(int expectedHours, String expectedEmployeeName, String expectedStartDate, String expectedEndDate) {
+        String employeeFullName = employee.getFirstName() + " " + employee.getLastName();
+        assertEquals(employeeFullName, expectedEmployeeName, "Employee name does not match");
+        assertEquals(startDate, expectedStartDate, "Start date does not match");
+        assertEquals(endDate, expectedEndDate, "End date does not match");
+        assertEquals(expectedHours, totalWorkedHours, "Total worked hours should be " + expectedHours);
+        
+        System.out.println("Total hours worked by " + employeeFullName + " from " + startDate + " to " + endDate + " is: " + totalWorkedHours);
     }
 
 
