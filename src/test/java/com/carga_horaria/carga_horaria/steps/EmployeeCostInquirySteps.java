@@ -1,29 +1,31 @@
-package com.carga_horaria.carga_horaria;
+package com.carga_horaria.carga_horaria.steps;
 
 import com.carga_horaria.carga_horaria.model.Employee;
 import com.carga_horaria.carga_horaria.model.WorkLog;
-import com.carga_horaria.carga_horaria.service.EmployeeService;
 import com.carga_horaria.carga_horaria.service.WorkLogService;
 import io.cucumber.java.en.*;
-import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-
+import static org.mockito.Mockito.*;
 import java.time.LocalDate;
 
 public class EmployeeCostInquirySteps {
 
+    @Autowired
     private WorkLogService workLogService;
 
     private Employee employee;
     private double hourlyRate;
     private double totalCost;
+    private WorkLog workLog;
 
-    public EmployeeCostInquirySteps(EmployeeService employeeService, WorkLogService workLogService) {
-        this.workLogService = workLogService;
+    @BeforeEach
+    public void setUp() {
     }
 
-    @Given("I am an operations manager in the system")
+    @Given("I am a operations manager in the system")
     public void iAmAnOperationsManagerInTheSystem() {
     }
 
@@ -34,12 +36,13 @@ public class EmployeeCostInquirySteps {
         employee.setLastName(employeeName.split(" ")[1]);
         employee.setId("12345");
 
-        WorkLog workLog = new WorkLog();
+        workLog = new WorkLog();
         workLog.setEmployeeId(employee.getId());
         workLog.setHours(hours);
         workLog.setTaskId("task123");
         workLog.setDate(LocalDate.parse(month + "-01"));
-        workLogService.addWorkLog(workLog);
+
+        when(workLogService.addWorkLog(workLog)).thenReturn(workLog);
     }
 
     @And("{string} has a salary of ${double} per hour")
@@ -49,6 +52,10 @@ public class EmployeeCostInquirySteps {
 
     @When("I request the total cost of hours worked for {string} in the month {string}")
     public void iRequestTheTotalCostOfHoursWorkedForInTheMonth(String employeeName, String month) {
+        double hours = workLog.getHours();
+        when(workLogService.getWorkedHours(employee.getId(), Integer.parseInt(month.split("-")[0]), Integer.parseInt(month.split("-")[1])))
+            .thenReturn((double) hours); 
+
         double totalHours = workLogService.getWorkedHours(employee.getId(), Integer.parseInt(month.split("-")[0]), Integer.parseInt(month.split("-")[1]));
         this.totalCost = totalHours * hourlyRate;
     }

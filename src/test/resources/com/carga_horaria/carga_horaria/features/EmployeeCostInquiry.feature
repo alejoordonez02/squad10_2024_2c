@@ -9,6 +9,7 @@ Feature: Consulta de costos de empleados
     When I request the total cost of hours worked for "John Doe" in the month "2024-11"
     Then the system should display the total cost of hours worked for "John Doe" as $3,200
 
+
   Scenario: View total cost of hours worked by all employees in a period
     Given I am a operations manager in the system
     And employees have logged hours for the month "2024-11"
