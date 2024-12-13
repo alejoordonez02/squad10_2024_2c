@@ -3,7 +3,7 @@
 Feature: Registro de horas por proyecto
 
  Scenario: Successfully register worked hours
-    Given I have a project and tasks assigned
+    Given I have a project called "API Development" and tasks assigned
     When I log 5 hours worked for the task "API Development" on "2024-12-01"
     Then the system should confirm that 5 hours were logged for the task "API Development" on "2024-12-01"
     And the total worked hours for the project should be updated
