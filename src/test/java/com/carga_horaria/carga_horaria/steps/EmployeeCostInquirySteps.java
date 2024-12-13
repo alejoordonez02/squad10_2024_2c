@@ -42,6 +42,60 @@ public class EmployeeCostInquirySteps {
     public void iAmAnOperationsManagerInTheSystem() {
     }
 
+    @Given("multiple employees have logged hours for {string} in the month {string}")
+    public void multipleEmployeesHaveLoggedHoursForProjectInTheMonth(String projectName, String month) {
+        Employee employee1 = createEmployee("John Doe");
+        Employee employee2 = createEmployee("Jane Smith");
+        Project project = createProject(projectName);
+
+        Task task1 = createTaskForProject(project, employee1);
+        Task task2 = createTaskForProject(project, employee2);
+
+        WorkLog workLog1 = createWorkLogForTask(employee1.getId(), task1.getId(), 40, month);
+        WorkLog workLog2 = createWorkLogForTask(employee2.getId(), task2.getId(), 35, month);
+
+        workLogs.add(workLog1);
+        workLogs.add(workLog2);
+        employees.add(employee1);
+        employees.add(employee2);
+        projects.add(project);
+        tasks.add(task1);
+        tasks.add(task2);
+
+        hourlyRate = 25; 
+    }
+
+    @Given("multiple employees have logged hours in the month {string}")
+    public void multipleEmployeesHaveLoggedHoursInTheMonth(String month) {
+        Employee employee1 = createEmployee("John Doe");
+        Employee employee2 = createEmployee("Jane Smith");
+
+        Project project1 = createProject("Project A");
+        Project project2 = createProject("Project B");
+
+        Task task1 = createTaskForProject(project1, employee1);
+        Task task2 = createTaskForProject(project2, employee2);
+
+        WorkLog workLog1 = createWorkLogForTask(employee1.getId(), task1.getId(), 40, month); 
+        WorkLog workLog2 = createWorkLogForTask(employee2.getId(), task1.getId(), 25, month); 
+        WorkLog workLog3 = createWorkLogForTask(employee1.getId(), task2.getId(), 35, month);
+        WorkLog workLog4 = createWorkLogForTask(employee2.getId(), task2.getId(), 45, month); 
+
+        workLogs.add(workLog1);
+        workLogs.add(workLog2);
+        workLogs.add(workLog3);
+        workLogs.add(workLog4);
+        employees.add(employee1);
+        employees.add(employee2);
+        projects.add(project1);
+        projects.add(project2);
+        tasks.add(task1);
+        tasks.add(task2);
+
+        hourlyRate = 25; 
+    }
+
+
     @And("the employee {string} has logged {int} hours in the month {string}")
     public void theEmployeeHasLoggedHoursInTheMonth(String employeeName, int hours, String month) {
         Employee employee = createEmployee(employeeName);
@@ -80,15 +134,37 @@ public class EmployeeCostInquirySteps {
         tasks.add(task);
     }
 
+    @And("the employee {string} has logged {int} hours for {string} between {string} and {string}")
+    public void theEmployeeHasLoggedHoursForProjectBetweenDates(String employeeName, int hours, String projectName, String startDate, String endDate) {
+        Employee employee = createEmployee(employeeName);
+        employees.add(employee);
+        Project project = createProject(projectName);
+        projects.add(project);
+        Task task = createTaskForProject(project, employee);
+        tasks.add(task);
+        
+        WorkLog workLogInicio = createWorkLogForTask(employee.getId(), task.getId(), hours/2, LocalDate.parse(startDate));
+        workLogs.add(workLogInicio);
+
+        WorkLog workLogFin  = createWorkLogForTask(employee.getId(), task.getId(), hours/2, LocalDate.parse(endDate));
+        workLogs.add(workLogFin);
+    }
+
     @When("I request the total cost of hours worked for {string} in the month {string}")
     public void iRequestTheTotalCostOfHoursWorkedForInTheMonth(String employeeName, String month) {
         for (Employee employee : employees) {
             if (employee.getFirstName().equals(employeeName.split(" ")[0]) && employee.getLastName().equals(employeeName.split(" ")[1])) {
-                WorkLog workLog = findWorkLogForEmployeeInMonth(employee.getId(), month);
-                double hoursWorked = workLog != null ? workLog.getHours() : 0;
+                List<WorkLog> workLogsForEmployee = findWorkLogForEmployeeInMonth(employee.getId(), month);
+
+                double totalHoursWorked = 0;
+                for (WorkLog workLog : workLogsForEmployee) {
+                    totalHoursWorked += workLog.getHours();
+                }
+
                 when(workLogService.getWorkedHours(employee.getId(), Integer.parseInt(month.split("-")[0]), Integer.parseInt(month.split("-")[1])))
-                    .thenReturn(hoursWorked);
-                totalCost = hoursWorked * hourlyRate;
+                    .thenReturn(totalHoursWorked);
+
+                totalCost = totalHoursWorked * hourlyRate;
             }
         }
     }
@@ -97,11 +173,19 @@ public class EmployeeCostInquirySteps {
     public void iRequestTheTotalCostOfHoursWorkedByAllEmployeesInThePeriod(String month) {
         totalCostAllEmployees = 0;  
         for (Employee employee : employees) {
-            WorkLog workLog = findWorkLogForEmployeeInMonth(employee.getId(), month);
-            double hoursWorked = workLog != null ? workLog.getHours() : 0;
+
+            List<WorkLog> workLogsForEmployee = findWorkLogForEmployeeInMonth(employee.getId(), month);
+
+            double totalHoursWorked = 0;
+            for (WorkLog workLog : workLogsForEmployee) {
+                totalHoursWorked += workLog.getHours();
+            }
+
             when(workLogService.getWorkedHours(employee.getId(), Integer.parseInt(month.split("-")[0]), Integer.parseInt(month.split("-")[1])))
-                .thenReturn(hoursWorked);
-            double costForEmployee = hoursWorked * hourlyRate;
+                .thenReturn(totalHoursWorked);
+
+            double costForEmployee = totalHoursWorked * hourlyRate;
+
             totalCostAllEmployees += costForEmployee;
         }
     }
@@ -124,6 +208,56 @@ public class EmployeeCostInquirySteps {
         }
     }
 
+    @When("I request the total cost of hours worked by the team for {string} in the month {string}")
+    public void iRequestTheTotalCostOfHoursWorkedByTheTeamForProjectInTheMonth(String projectName, String month) {
+        totalCost = 0;
+        for (Employee employee : employees) {
+            List<WorkLog> workLogsForEmployee = findWorkLogForEmployeeOnProjectInMonth(employee.getId(), projectName, month);
+
+            double totalHoursWorked = 0;
+            for (WorkLog workLog : workLogsForEmployee) {
+                totalHoursWorked += workLog.getHours();
+            }
+            double costForEmployee = totalHoursWorked * hourlyRate;
+            totalCost += costForEmployee;
+        }
+    }
+
+    @When("I request the total cost of hours worked by the team for the month {string}")
+    public void iRequestTheTotalCostOfHoursWorkedByTheTeamForTheMonth(String month) {
+        totalCost = 0;
+
+        for (Employee employee : employees) {
+            List<WorkLog> workLogsForEmployee = findWorkLogForEmployeeInMonth(employee.getId(), month);
+
+            double totalHoursWorked = 0;
+            for (WorkLog workLog : workLogsForEmployee) {
+                totalHoursWorked += workLog.getHours();
+            }
+
+            double costForEmployee = totalHoursWorked * hourlyRate;
+            totalCost += costForEmployee;
+        }
+    }
+
+    @When("I request the total cost of hours worked by {string} for {string} between {string} and {string}")
+    public void iRequestTheTotalCostOfHoursWorkedByForProjectBetweenDates(String employeeName, String projectName, String startDate, String endDate) {
+        for (Employee employee : employees) {
+            if (employee.getFirstName().equals(employeeName.split(" ")[0]) && employee.getLastName().equals(employeeName.split(" ")[1])) {
+                List<WorkLog> workLogsForEmployee = findWorkLogsForEmployeeOnProjectInRange(employee.getId(), projectName, startDate, endDate);
+    
+                // Debugging to check if the workLogsForEmployee list contains any logs
+                System.out.println("Found " + workLogsForEmployee.size() + " work logs for employee " + employeeName + " on project " + projectName + " in the date range.");
+    
+                double totalHoursWorked = workLogsForEmployee.stream().mapToDouble(WorkLog::getHours).sum();
+                totalCost = totalHoursWorked * hourlyRate;
+    
+                System.out.println("Total hours worked: " + totalHoursWorked);
+                System.out.println("Total cost: " + totalCost);
+            }
+        }
+    }
+
     @Then("the system should display the total cost of hours worked for {string} as ${double}")
     public void theSystemShouldDisplayTheTotalCostOfHoursWorkedForAs(String employeeName, double expectedCost) {
         assertEquals(expectedCost, totalCost, 0.01);
@@ -132,9 +266,13 @@ public class EmployeeCostInquirySteps {
     @Then("the system should display the total cost of hours worked for each employee")
     public void theSystemShouldDisplayTheTotalCostOfHoursWorkedForEachEmployee() {
         for (Employee employee : employees) {
-            WorkLog workLog = findWorkLogForEmployeeInMonth(employee.getId(), "2024-11");  // Aquí puedes ajustar el mes como necesites
-            double hoursWorked = workLog != null ? workLog.getHours() : 0;
-            double costForEmployee = hoursWorked * hourlyRate;
+            List<WorkLog> workLogsForEmployee = findWorkLogForEmployeeInMonth(employee.getId(), "2024-11");
+
+            double totalHoursWorked = 0;
+            for (WorkLog workLog : workLogsForEmployee) {
+                totalHoursWorked += workLog.getHours();
+            }
+            double costForEmployee = totalHoursWorked * hourlyRate;
             assertEquals(costForEmployee, totalCostAllEmployees, 0.01);
         }
     }
@@ -144,9 +282,29 @@ public class EmployeeCostInquirySteps {
         assertEquals(expectedCost, totalCost, 0.01);
     }
 
+    @Then("the system should display the total cost of hours worked by all employees in the team")
+    public void theSystemShouldDisplayTheTotalCostOfHoursWorkedByAllEmployeesInTheTeam() {
+        System.out.println("Total cost of hours worked by the team: $" + totalCost);
+    }
+
+    @Then("the system should display the total cost of hours worked for the entire team")
+    public void theSystemShouldDisplayTheTotalCostOfHoursWorkedForTheEntireTeam() {
+        System.out.println("Total cost of hours worked by the entire team: $" + totalCost);
+    }
+
     @And("the total cost for all employees should be calculated based on their respective hourly rates and logged hours")
     public void theTotalCostForAllEmployeesShouldBeCalculated() {
         assertEquals(totalCostAllEmployees, totalCostAllEmployees, 0.01);
+    }
+
+    @And("the total cost should be calculated based on the sum of each employee's hours worked and their hourly rate")
+    public void theTotalCostShouldBeCalculatedBasedOnTheSumOfEachEmployeeSHoursWorkedAndTheirHourlyRate() {
+        assertEquals(1875, totalCost, 0.01);
+    }
+
+    @And("the cost should be calculated based on each employee's hourly rate and hours worked")
+    public void theCostShouldBeCalculatedBasedOnEachEmployeeSHourlyRateAndHoursWorked() {
+        assertEquals(3625, totalCost, 0.01);
     }
 
     private Employee createEmployee(String name) {
@@ -192,14 +350,26 @@ public class EmployeeCostInquirySteps {
         return workLog;
     }
 
-    private WorkLog findWorkLogForEmployeeInMonth(String employeeId, String month) {
+    private WorkLog createWorkLogForTask(String employeeId, String taskId, int hours, LocalDate date) {
+        WorkLog workLog = new WorkLog();
+        workLog.setEmployeeId(employeeId);
+        workLog.setHours(hours);
+        workLog.setTaskId(taskId);
+        workLog.setDate(date);
+        return workLog;
+    }
+
+    private List<WorkLog> findWorkLogForEmployeeInMonth(String employeeId, String month) {
+        List<WorkLog> workLogsForEmployeeInMonth = new ArrayList<>();
         for (WorkLog workLog : workLogs) {
-            if (workLog.getEmployeeId().equals(employeeId) && workLog.getDate().getMonthValue() == Integer.parseInt(month.split("-")[1]) &&
+            if (workLog.getEmployeeId().equals(employeeId) && 
+                workLog.getDate().getMonthValue() == Integer.parseInt(month.split("-")[1]) && 
                 workLog.getDate().getYear() == Integer.parseInt(month.split("-")[0])) {
-                return workLog;
+                workLogsForEmployeeInMonth.add(workLog);
             }
         }
-        return null; 
+        
+        return workLogsForEmployeeInMonth;
     }
 
     private List<WorkLog> findWorkLogForEmployeeOnProjectInMonth(String employeeId, String projectName, String month) {
@@ -228,6 +398,36 @@ public class EmployeeCostInquirySteps {
             }
         }
     
+        return workLogsForEmployee;
+    }
+
+    private List<WorkLog> findWorkLogsForEmployeeOnProjectInRange(String employeeId, String projectName, String startDate, String endDate) {
+        List<WorkLog> workLogsForEmployee = new ArrayList<>();
+
+        LocalDate start = LocalDate.parse(startDate);
+        LocalDate end = LocalDate.parse(endDate);
+
+        Project project = projects.stream()
+                                  .filter(p -> p.getName().equals(projectName))
+                                  .findFirst()
+                                  .orElse(null);
+    
+        if (project != null) {
+            String projectId = project.getId();  
+
+            for (WorkLog workLog : workLogs) {
+                Task task = tasks.stream()
+                                 .filter(t -> t.getId().equals(workLog.getTaskId()))
+                                 .findFirst()
+                                 .orElse(null);
+                if (task != null && task.getProjectId().equals(projectId) &&
+                    workLog.getEmployeeId().equals(employeeId) &&
+                    !workLog.getDate().isBefore(start) &&
+                    !workLog.getDate().isAfter(end)) {
+                    workLogsForEmployee.add(workLog);
+                }
+            }
+        }
         return workLogsForEmployee;
     }
 }
