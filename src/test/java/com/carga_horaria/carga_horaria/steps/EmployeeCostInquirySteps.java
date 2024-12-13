@@ -43,7 +43,7 @@ public class EmployeeCostInquirySteps {
     }
 
     @Given("multiple employees have logged hours for {string} in the month {string}")
-    public void multipleEmployeesHaveLoggedHoursForProjectInTheMonth(String projectName, String month) {
+    public void multipleEmployeesHaveLoggedHoursForProjectInTheMonth(String projectName, String date) {
         Employee employee1 = createEmployee("John Doe");
         Employee employee2 = createEmployee("Jane Smith");
         Project project = createProject(projectName);
@@ -51,8 +51,8 @@ public class EmployeeCostInquirySteps {
         Task task1 = createTaskForProject(project, employee1);
         Task task2 = createTaskForProject(project, employee2);
 
-        WorkLog workLog1 = createWorkLogForTask(employee1.getId(), task1.getId(), 40, month);
-        WorkLog workLog2 = createWorkLogForTask(employee2.getId(), task2.getId(), 35, month);
+        WorkLog workLog1 = createWorkLogForTask(employee1.getId(), task1.getId(), 40, LocalDate.parse(date));
+        WorkLog workLog2 = createWorkLogForTask(employee2.getId(), task2.getId(), 35, LocalDate.parse(date));
 
         workLogs.add(workLog1);
         workLogs.add(workLog2);
@@ -66,7 +66,7 @@ public class EmployeeCostInquirySteps {
     }
 
     @Given("multiple employees have logged hours in the month {string}")
-    public void multipleEmployeesHaveLoggedHoursInTheMonth(String month) {
+    public void multipleEmployeesHaveLoggedHoursInTheMonth(String date) {
         Employee employee1 = createEmployee("John Doe");
         Employee employee2 = createEmployee("Jane Smith");
 
@@ -76,10 +76,10 @@ public class EmployeeCostInquirySteps {
         Task task1 = createTaskForProject(project1, employee1);
         Task task2 = createTaskForProject(project2, employee2);
 
-        WorkLog workLog1 = createWorkLogForTask(employee1.getId(), task1.getId(), 40, month); 
-        WorkLog workLog2 = createWorkLogForTask(employee2.getId(), task1.getId(), 25, month); 
-        WorkLog workLog3 = createWorkLogForTask(employee1.getId(), task2.getId(), 35, month);
-        WorkLog workLog4 = createWorkLogForTask(employee2.getId(), task2.getId(), 45, month); 
+        WorkLog workLog1 = createWorkLogForTask(employee1.getId(), task1.getId(), 40, LocalDate.parse(date)); 
+        WorkLog workLog2 = createWorkLogForTask(employee2.getId(), task1.getId(), 25, LocalDate.parse(date)); 
+        WorkLog workLog3 = createWorkLogForTask(employee1.getId(), task2.getId(), 35, LocalDate.parse(date));
+        WorkLog workLog4 = createWorkLogForTask(employee2.getId(), task2.getId(), 45, LocalDate.parse(date)); 
 
         workLogs.add(workLog1);
         workLogs.add(workLog2);
@@ -97,9 +97,9 @@ public class EmployeeCostInquirySteps {
 
 
     @And("the employee {string} has logged {int} hours in the month {string}")
-    public void theEmployeeHasLoggedHoursInTheMonth(String employeeName, int hours, String month) {
+    public void theEmployeeHasLoggedHoursInTheMonth(String employeeName, int hours, String date) {
         Employee employee = createEmployee(employeeName);
-        WorkLog workLog = createWorkLog(employee.getId(), hours, month);
+        WorkLog workLog = createWorkLog(employee.getId(), hours, LocalDate.parse(date));
         workLogs.add(workLog);
         employees.add(employee);
     }
@@ -110,11 +110,11 @@ public class EmployeeCostInquirySteps {
     }
 
     @And("employees have logged hours for the month {string}")
-    public void employeesHaveLoggedHoursForTheMonth(String month) {
+    public void employeesHaveLoggedHoursForTheMonth(String date) {
         Employee employee1 = createEmployee("John Doe");
         Employee employee2 = createEmployee("Jane Smith");
-        WorkLog workLog1 = createWorkLog(employee1.getId(), 40, month);
-        WorkLog workLog2 = createWorkLog(employee2.getId(), 35, month);
+        WorkLog workLog1 = createWorkLog(employee1.getId(), 40, LocalDate.parse(date));
+        WorkLog workLog2 = createWorkLog(employee2.getId(), 35, LocalDate.parse(date));
         
         workLogs.add(workLog1);
         workLogs.add(workLog2);
@@ -123,11 +123,11 @@ public class EmployeeCostInquirySteps {
     }
     
     @And("the employee {string} has logged {int} hours for {string} in the month {string}")
-    public void theEmployeeHasLoggedHoursForProjectInTheMonth(String employeeName, int hours, String projectName, String month) {
+    public void theEmployeeHasLoggedHoursForProjectInTheMonth(String employeeName, int hours, String projectName, String date) {
         Employee employee = createEmployee(employeeName);
         Project project = createProject(projectName);
         Task task = createTaskForProject(project, employee);
-        WorkLog workLog = createWorkLogForTask(employee.getId(), task.getId(), hours, month);
+        WorkLog workLog = createWorkLogForTask(employee.getId(), task.getId(), hours, LocalDate.parse(date));
         workLogs.add(workLog);
         employees.add(employee);
         projects.add(project);
@@ -331,22 +331,13 @@ public class EmployeeCostInquirySteps {
         return task;
     }
 
-    private WorkLog createWorkLog(String employeeId, int hours, String month) {
+    private WorkLog createWorkLog(String employeeId, int hours, LocalDate date) {
         WorkLog workLog = new WorkLog();
         workLog.setEmployeeId(employeeId);
         workLog.setHours(hours);
         String taskId = "task" + taskIdCounter++;
         workLog.setTaskId(taskId);
-        workLog.setDate(LocalDate.parse(month + "-01"));
-        return workLog;
-    }
-
-    private WorkLog createWorkLogForTask(String employeeId, String taskId, int hours, String month) {
-        WorkLog workLog = new WorkLog();
-        workLog.setEmployeeId(employeeId);
-        workLog.setHours(hours);
-        workLog.setTaskId(taskId);
-        workLog.setDate(LocalDate.parse(month + "-01"));
+        workLog.setDate(date);
         return workLog;
     }
 
