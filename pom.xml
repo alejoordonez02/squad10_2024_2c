@@ -80,8 +80,20 @@
 		</dependency>
 		<dependency>
 			<groupId>io.cucumber</groupId>
-			<artifactId>cucumber-junit</artifactId>
+			<artifactId>cucumber-junit-platform-engine</artifactId>
 			<version>7.0.0</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-api</artifactId>
+			<version>5.8.2</version>  <!-- Si usas JUnit 5 -->
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-engine</artifactId>
+			<version>5.8.2</version>  <!-- Si usas JUnit 5 -->
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
@@ -89,21 +101,18 @@
 	<build>
 		<plugins>
 			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-			</plugin>
-			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
-				<version>2.22.2</version> 
+				<version>2.22.2</version>
 				<configuration>
+					<dependenciesToScan>
+						<dependency>io.cucumber:cucumber-java</dependency>
+						<dependency>org.junit.jupiter:junit-jupiter-api</dependency>
+					</dependenciesToScan>
 					<includes>
 						<include>**/*Test.class</include> 
-						<include>**/*Steps.class</include> 
-						<include>**/*CucumberTest.class</include> 
+						<include>**/*CucumberTest.class</include>
 					</includes>
-					<parallel>all</parallel>
-					<threadCount>4</threadCount> 
 				</configuration>
 			</plugin>
 		</plugins>

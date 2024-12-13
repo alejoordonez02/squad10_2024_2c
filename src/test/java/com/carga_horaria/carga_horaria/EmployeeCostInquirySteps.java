@@ -5,7 +5,9 @@ import com.carga_horaria.carga_horaria.model.WorkLog;
 import com.carga_horaria.carga_horaria.service.EmployeeService;
 import com.carga_horaria.carga_horaria.service.WorkLogService;
 import io.cucumber.java.en.*;
-import static org.junit.Assert.*;
+import org.junit.jupiter.api.Assertions;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.time.LocalDate;
 
