@@ -21,7 +21,7 @@ Feature: Registro de horas por proyecto
     And the hours should not be logged
 
   Scenario: Update previously logged hours
-    Given I have a project and tasks assigned
+    Given I have a project called "API Development" and tasks assigned
     And I have already logged 3 hours worked for the task "API Development" on "2024-12-01"
     When I update the log to 6 hours for the task "API Development" on "2024-12-01"
     Then the system should update the logged hours for that task and date to 6 hours
