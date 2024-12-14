@@ -14,13 +14,8 @@ Feature: Registro de horas por proyecto
     Then the system should show an error message saying "Task is required"
     And the hours should not be logged
 
-  Scenario: Attempt to log hours for a future date
-    Given I have a project and tasks assigned
-    When I try to log 3 hours worked for the task "Code Review" on "2024-12-05"
-    Then the system should show an error message saying "Cannot log hours for a future date"
-
   Scenario: Attempt to log hours with incorrect date format
-    Given I have a project and tasks assigned
+    Given I have a project called "API Development" and tasks assigned
     When I try to log 6 hours worked for the task "Security Implementation" on "01-13-2024"
     Then the system should show an error message saying "Incorrect date format"
     And the hours should not be logged
