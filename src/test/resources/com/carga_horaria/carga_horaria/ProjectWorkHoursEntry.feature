@@ -28,27 +28,26 @@ Feature: Registro de horas por proyecto
     And the total worked hours should reflect the change
 
   Scenario: View logged hours for a specific date
-    Given I have a project and tasks assigned
+    Given I have a project called "API Development" and tasks assigned
     And I have logged 4 hours worked for the task "Database Design" on "2024-12-01"
     When I access the logged hours for "2024-12-01"
     Then the system should show 4 hours worked for the task "Database Design" on that date
 
   Scenario: Attempt to log hours for a task not assigned
-    Given I have a project
-    And I do not have the task "Tool Research" assigned
+    Given I have a project but I not have any tasks assigned
     When I try to log 2 hours worked for the task "Tool Research" on "2024-12-01"
     Then the system should show an error message saying "This task is not assigned to you"
     And the hours should not be logged
 
   Scenario: Log hours for multiple tasks on the same day
-    Given I have a project and tasks assigned
+    Given I have a project called "API Development" and tasks assigned
     When I log 4 hours for the task "API Development" on "2024-12-01"
     And I then log 2 hours for the task "Code Review" on the same day
     Then the system should log 4 hours for "API Development" and 2 hours for "Code Review" on "2024-12-01"
     And the total worked hours for the day should be 6
 
   Scenario: View a summary of logged hours for a project
-    Given I have a project and tasks assigned
+    Given I have a project called "API Development" and tasks assigned
     And I have logged multiple hours for different tasks within the project "Project A"
     When I access the summary of logged hours for the project "Project A"
     Then the system should display the total hours worked for the project

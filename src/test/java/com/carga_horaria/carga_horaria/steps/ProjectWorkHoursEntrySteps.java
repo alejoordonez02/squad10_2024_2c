@@ -59,6 +59,18 @@ public class ProjectWorkHoursEntrySteps {
         projects.add(project);
     }
 
+    @Given("I have already logged {int} hours worked for the task {string} on {string}")
+    public void i_have_already_logged_hours_worked_for_the_task_on(int hours, String taskName, String date) {
+        Task task = tasks.stream()
+            .filter(t -> t.getName().equals(taskName))
+            .findFirst()
+            .orElseThrow(() -> new IllegalArgumentException("Task not found"));
+
+        WorkLog workLog = createWorkLogForTask(employee.getId(), task.getId(), hours, LocalDate.parse(date));
+        workLogs.add(workLog);
+        totalWorkedHours += hours;
+    }
+
     @When("I log {int} hours worked for the task {string} on {string}")
     public void i_log_hours_worked_for_the_task_on(int hours, String projectName, String date) {
         System.out.println("Projects: " + projects);
@@ -112,6 +124,27 @@ public class ProjectWorkHoursEntrySteps {
         }
     }
 
+    @When("I update the log to {int} hours for the task {string} on {string}")
+    public void i_update_the_log_to_hours_for_the_task_on(int updatedHours, String taskName, String date) {
+        LocalDate parsedDate = LocalDate.parse(date);
+        WorkLog existingLog = workLogs.stream()
+            .filter(wl -> wl.getTaskId().equals(
+                tasks.stream()
+                    .filter(t -> t.getName().equals(taskName))
+                    .findFirst()
+                    .orElseThrow(() -> new IllegalArgumentException("Task not found"))
+                    .getId()
+                )
+            )
+            .filter(wl -> wl.getDate().equals(parsedDate))
+            .findFirst()
+            .orElseThrow(() -> new IllegalArgumentException("WorkLog not found for the given task and date"));
+
+        totalWorkedHours -= existingLog.getHours(); 
+        existingLog.setHours(updatedHours);       
+        totalWorkedHours += updatedHours;         
+    }
+
     @Then("the system should confirm that {int} hours were logged for the task {string} on {string}")
     public void the_system_should_confirm_that_hours_were_logged_for_the_task_on(int hours, String taskName, String date) {
         assertEquals(hours, totalWorkedHours, "The logged hours are incorrect for the task on the given date.");
@@ -120,6 +153,18 @@ public class ProjectWorkHoursEntrySteps {
     @Then("the system should show an error message saying {string}")
     public void the_system_should_show_an_error_message_saying(String expectedMessage) {
         assertEquals(expectedMessage, errorMessage, "The error message does not match.");
+    }
+
+    @Then("the system should update the logged hours for that task and date to {int} hours")
+    public void the_system_should_update_the_logged_hours_for_that_task_and_date_to_hours(int expectedHours) {
+        WorkLog updatedLog = workLogs.stream()
+            .filter(wl -> wl.getTaskId().equals(
+                tasks.get(0).getId()
+            ))
+            .findFirst()
+            .orElseThrow(() -> new IllegalArgumentException("WorkLog not found"));
+
+        assertEquals(expectedHours, updatedLog.getHours(), "Logged hours for the task were not updated correctly.");
     }
 
     @And("the total worked hours for the project should be updated")
@@ -196,49 +241,8 @@ public class ProjectWorkHoursEntrySteps {
 
 
 
-    @Given("I have already logged {int} hours worked for the task {string} on {string}")
-    public void i_have_already_logged_hours_worked_for_the_task_on(int hours, String taskName, String date) {
-        Task task = tasks.stream()
-            .filter(t -> t.getName().equals(taskName))
-            .findFirst()
-            .orElseThrow(() -> new IllegalArgumentException("Task not found"));
 
-        WorkLog workLog = createWorkLogForTask(employee.getId(), task.getId(), hours, LocalDate.parse(date));
-        workLogs.add(workLog);
-        totalWorkedHours += hours;
-    }
 
-    @When("I update the log to {int} hours for the task {string} on {string}")
-    public void i_update_the_log_to_hours_for_the_task_on(int updatedHours, String taskName, String date) {
-        LocalDate parsedDate = LocalDate.parse(date);
-        WorkLog existingLog = workLogs.stream()
-            .filter(wl -> wl.getTaskId().equals(
-                tasks.stream()
-                    .filter(t -> t.getName().equals(taskName))
-                    .findFirst()
-                    .orElseThrow(() -> new IllegalArgumentException("Task not found"))
-                    .getId()
-                )
-            )
-            .filter(wl -> wl.getDate().equals(parsedDate))
-            .findFirst()
-            .orElseThrow(() -> new IllegalArgumentException("WorkLog not found for the given task and date"));
 
-        // Update the hours
-        totalWorkedHours -= existingLog.getHours(); // Subtract old hours
-        existingLog.setHours(updatedHours);        // Update hours
-        totalWorkedHours += updatedHours;          // Add new hours
-    }
 
-    @Then("the system should update the logged hours for that task and date to {int} hours")
-    public void the_system_should_update_the_logged_hours_for_that_task_and_date_to_hours(int expectedHours) {
-        WorkLog updatedLog = workLogs.stream()
-            .filter(wl -> wl.getTaskId().equals(
-                tasks.get(0).getId() // Assuming the first task for simplicity
-            ))
-            .findFirst()
-            .orElseThrow(() -> new IllegalArgumentException("WorkLog not found"));
-
-        assertEquals(expectedHours, updatedLog.getHours(), "Logged hours for the task were not updated correctly.");
-    }
 }
