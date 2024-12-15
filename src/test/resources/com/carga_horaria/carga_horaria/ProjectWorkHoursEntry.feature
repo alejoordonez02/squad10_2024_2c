@@ -40,11 +40,11 @@ Feature: Registro de horas por proyecto
     And the hours should not be logged
 
   Scenario: Log hours for multiple tasks on the same day
-    Given I have a project called "API Development" and more than one tasks assigned
+    Given I have a project called "API Development Project" and more than one tasks assigned
     When I log 4 hours for the task "API Development" on "2024-12-01"
-    And I then log 2 hours for the task "Code Review" on the same day
+    And I then log 2 hours for the task "Code Review" on "2024-12-01"
     Then the system should log 4 hours for "API Development" and 2 hours for "Code Review" on "2024-12-01"
-    And the total worked hours for the day should be 6
+    And the total worked hours for "2024-12-01" should be 6
 
   Scenario: View a summary of logged hours for a project
     Given I have a project called "API Development" and tasks assigned

@@ -74,6 +74,20 @@ public class ProjectWorkHoursEntrySteps {
         totalWorkedHours += hours;
     }
 
+    @Given("I have a project called {string} and more than one tasks assigned")
+    public void i_have_a_project_called_and_more_than_one_task_assigned(String projectName) {
+        employee = createEmployee("John Doe"); 
+        Project project = createProject(projectName);
+        projects.add(project);
+
+        Task task1 = createTaskForProject(project, employee);
+        task1.setName("API Development");
+        Task task2 = createTaskForProject(project, employee);  
+        task2.setName("Code Review");
+        tasks.add(task1);
+        tasks.add(task2);
+    }
+
     @And("I have logged {int} hours worked for the task {string} on {string}")
     public void i_have_logged_hours_worked_for_the_task_on(int hours, String taskName, String date) {
         Task task = tasks.stream()
@@ -168,6 +182,30 @@ public class ProjectWorkHoursEntrySteps {
             .collect(Collectors.toList());
     }
 
+    @When("I log {int} hours for the task {string} on {string}")
+    public void i_log_hours_for_the_task_on(int hours, String taskName, String date) {
+        Task task = tasks.stream()
+            .filter(t -> t.getName().equals(taskName))
+            .findFirst()
+            .orElseThrow(() -> new IllegalArgumentException("Task not found"));
+        
+        WorkLog workLog = createWorkLogForTask(employee.getId(), task.getId(), hours, LocalDate.parse(date));
+        workLogs.add(workLog);
+        totalWorkedHours += hours;
+    }
+
+    @And("I then log {int} hours for the task {string} on {string}")
+    public void i_then_log_hours_for_the_task_on_the_same_day(int hours, String taskName, String date) {
+        Task task = tasks.stream()
+            .filter(t -> t.getName().equals(taskName))
+            .findFirst()
+            .orElseThrow(() -> new IllegalArgumentException("Task not found"));
+
+        WorkLog workLog = createWorkLogForTask(employee.getId(), task.getId(), hours, LocalDate.parse(date));
+        workLogs.add(workLog);
+        totalWorkedHours += hours;
+    }
+
     @Then("the system should confirm that {int} hours were logged for the task {string} on {string}")
     public void the_system_should_confirm_that_hours_were_logged_for_the_task_on(int hours, String taskName, String date) {
         assertEquals(hours, totalWorkedHours, "The logged hours are incorrect for the task on the given date.");
@@ -207,6 +245,29 @@ public class ProjectWorkHoursEntrySteps {
         assertEquals(expectedHours, matchingWorkLog.getHours(), "The displayed hours for the task are incorrect.");
     }
 
+    @Then("the system should log {int} hours for {string} and {int} hours for {string} on {string}")
+    public void the_system_should_log_hours_for_and_hours_for_on(int expectedHours1, String taskName1, int expectedHours2, String taskName2, String date) {
+        WorkLog workLog1 = workLogs.stream()
+            .filter(wl -> wl.getTaskId().equals(
+                tasks.stream().filter(t -> t.getName().equals(taskName1)).findFirst().orElseThrow(() -> new IllegalArgumentException("Task not found")).getId()
+            ))
+            .filter(wl -> wl.getDate().equals(LocalDate.parse(date)))
+            .findFirst()
+            .orElseThrow(() -> new IllegalArgumentException("WorkLog not found for the given task and date"));
+
+        assertEquals(expectedHours1, workLog1.getHours(), "Hours for " + taskName1 + " are incorrect.");
+
+        WorkLog workLog2 = workLogs.stream()
+            .filter(wl -> wl.getTaskId().equals(
+                tasks.stream().filter(t -> t.getName().equals(taskName2)).findFirst().orElseThrow(() -> new IllegalArgumentException("Task not found")).getId()
+            ))
+            .filter(wl -> wl.getDate().equals(LocalDate.parse(date)))
+            .findFirst()
+            .orElseThrow(() -> new IllegalArgumentException("WorkLog not found for the given task and date"));
+
+        assertEquals(expectedHours2, workLog2.getHours(), "Hours for " + taskName2 + " are incorrect.");
+    }
+
     @And("the total worked hours for the project should be updated")
     public void the_total_worked_hours_for_the_project_should_be_updated() {
         Double totalHoursForProject = workLogs.stream()
@@ -233,6 +294,19 @@ public class ProjectWorkHoursEntrySteps {
 
         assertTrue(totalHoursForProject > 0, "Total worked hours for the project should be greater than zero.");
     }
+
+    @And("the total worked hours for {string} should be {int}")
+    public void the_total_worked_hours_for_the_day_should_be(String date, int expectedTotalHours) {
+
+        double totalHoursForDay = workLogs.stream()
+            .filter(wl -> wl.getDate().equals(LocalDate.parse(date))) 
+            .mapToDouble(WorkLog::getHours)
+            .sum();
+
+        assertEquals(expectedTotalHours, totalHoursForDay, "The total worked hours for the day are incorrect.");
+    }
+
+    
 
     private Employee createEmployee(String name) {
         Employee employee = new Employee();
@@ -269,4 +343,19 @@ public class ProjectWorkHoursEntrySteps {
         workLog.setDate(date);
         return workLog;
     }
+
+
+
+
+
+
+
+
+ 
+
+
+
+ 
+
+
 }
