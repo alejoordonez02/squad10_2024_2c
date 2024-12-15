@@ -29,9 +29,9 @@ Feature: Registro de horas por proyecto
 
   Scenario: View logged hours for a specific date
     Given I have a project called "API Development" and tasks assigned
-    And I have logged 4 hours worked for the task "Database Design" on "2024-12-01"
+    And I have logged 4 hours worked for the task "API Development" on "2024-12-01"
     When I access the logged hours for "2024-12-01"
-    Then the system should show 4 hours worked for the task "Database Design" on that date
+    Then the system should show 4 hours worked for the task "API Development" on that date
 
   Scenario: Attempt to log hours for a task not assigned
     Given I have a project but I not have any tasks assigned
