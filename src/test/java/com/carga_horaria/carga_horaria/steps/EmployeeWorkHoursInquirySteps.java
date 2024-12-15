@@ -2,16 +2,14 @@ package com.carga_horaria.carga_horaria.steps;
 
 import io.cucumber.java.en.*;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.BeforeEach;
 
 import com.carga_horaria.carga_horaria.model.*;
-import com.carga_horaria.carga_horaria.service.WorkLogService;
-import org.springframework.beans.factory.annotation.Autowired;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,8 +25,6 @@ public class EmployeeWorkHoursInquirySteps {
     private static int taskIdCounter = 1;
     private String errorMessage;
 
-    @Autowired
-    private WorkLogService workLogService;
 
     @BeforeEach
     public void setUp() {
