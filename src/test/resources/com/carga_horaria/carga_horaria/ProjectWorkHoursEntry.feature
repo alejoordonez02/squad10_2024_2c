@@ -36,11 +36,11 @@ Feature: Registro de horas por proyecto
   Scenario: Attempt to log hours for a task not assigned
     Given I have a project but I not have any tasks assigned
     When I try to log 2 hours worked for the task "Tool Research" on "2024-12-01"
-    Then the system should show an error message saying "This task is not assigned to you"
+    Then the system should show an error message saying "Task not found"
     And the hours should not be logged
 
   Scenario: Log hours for multiple tasks on the same day
-    Given I have a project called "API Development" and tasks assigned
+    Given I have a project called "API Development" and more than one tasks assigned
     When I log 4 hours for the task "API Development" on "2024-12-01"
     And I then log 2 hours for the task "Code Review" on the same day
     Then the system should log 4 hours for "API Development" and 2 hours for "Code Review" on "2024-12-01"

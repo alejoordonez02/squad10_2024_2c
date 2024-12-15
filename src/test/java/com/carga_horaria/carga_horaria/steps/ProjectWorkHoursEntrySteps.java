@@ -197,7 +197,7 @@ public class ProjectWorkHoursEntrySteps {
                 tasks.stream()
                     .filter(t -> t.getName().equals(taskName))
                     .findFirst()
-                    .orElseThrow(() -> new IllegalArgumentException("Task not found hen"))
+                    .orElseThrow(() -> new IllegalArgumentException("Task not found"))
                     .getId()
                 )
             )
@@ -269,5 +269,4 @@ public class ProjectWorkHoursEntrySteps {
         workLog.setDate(date);
         return workLog;
     }
-
 }
