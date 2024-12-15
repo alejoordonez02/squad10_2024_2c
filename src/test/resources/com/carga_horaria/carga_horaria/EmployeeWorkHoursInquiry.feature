@@ -15,8 +15,8 @@ Scenario: Successfully view hours worked by an employee in a time period
   Scenario: View worked hours for an employee with no hours worked
     Given I am a operations manager in the system
     And the employee "Emily White" has not logged any hours in the period "2024-11-01" to "2024-11-30"
-    When I request the worked hours for "Emily White" for the period "2024-11-01" to "2024-11-30"
-    Then the system should display "0 hours worked" for "Emily White" in the period "2024-11-01" to "2024-11-30"
+    When I request the worked hours from the employee "Emily White" from "2024-11-01" to "2024-11-30"
+    Then the system should display 0 hours worked for "Emily White" in the period "2024-11-01" to "2024-11-30"
 
   Scenario: Attempt to request worked hours with incorrect date format
     Given I am a operations manager in the system
