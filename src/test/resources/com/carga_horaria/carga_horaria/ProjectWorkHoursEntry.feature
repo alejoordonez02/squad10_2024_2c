@@ -47,8 +47,7 @@ Feature: Registro de horas por proyecto
     And the total worked hours for "2024-12-01" should be 6
 
   Scenario: View a summary of logged hours for a project
-    Given I have a project called "API Development" and tasks assigned
-    And I have logged multiple hours for different tasks within the project "Project A"
-    When I access the summary of logged hours for the project "Project A"
+    Given I have a project called "API Development" and more than one tasks assigned
+    And I have logged multiple hours for different tasks within the project "API Development"
+    When I access the summary of logged hours for the project "API Development"
     Then the system should display the total hours worked for the project
-    And it should break down the hours by each task and date

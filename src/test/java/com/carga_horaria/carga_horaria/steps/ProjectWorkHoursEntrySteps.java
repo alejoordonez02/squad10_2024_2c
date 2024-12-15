@@ -23,6 +23,7 @@ public class ProjectWorkHoursEntrySteps {
     private String startDate;
     private String endDate;
     private int totalWorkedHours;
+    private double totalWorkedHoursPerProject;
     private List<WorkLog> workLogs = new ArrayList<>();
     private List<WorkLog> filteredWorkLogs = new ArrayList<>();
     private List<Project> projects = new ArrayList<>();
@@ -98,6 +99,25 @@ public class ProjectWorkHoursEntrySteps {
         WorkLog workLog = createWorkLogForTask(employee.getId(), task.getId(), hours, LocalDate.parse(date));
         workLogs.add(workLog);
         totalWorkedHours += hours;
+    }
+
+    @And("I have logged multiple hours for different tasks within the project {string}")
+    public void i_have_logged_multiple_hours_for_different_tasks_within_the_project(String projectName) {
+        Project project = projects.stream()
+            .filter(p -> p.getName().equals(projectName))
+            .findFirst()
+            .orElseThrow(() -> new IllegalArgumentException("Project not found"));
+    
+        Task task1 = tasks.stream().filter(t -> t.getProjectId().equals(project.getId())).findFirst().orElseThrow();
+        Task task2 = tasks.stream().filter(t -> t.getProjectId().equals(project.getId())).skip(1).findFirst().orElseThrow();
+    
+        WorkLog workLog1 = createWorkLogForTask(employee.getId(), task1.getId(), 5, LocalDate.parse("2024-12-01"));
+        WorkLog workLog2 = createWorkLogForTask(employee.getId(), task2.getId(), 3, LocalDate.parse("2024-12-01"));
+        WorkLog workLog3 = createWorkLogForTask(employee.getId(), task1.getId(), 2, LocalDate.parse("2024-12-02"));
+        
+        workLogs.add(workLog1);
+        workLogs.add(workLog2);
+        workLogs.add(workLog3);
     }
 
     @When("I log {int} hours worked for the task {string} on {string}")
@@ -194,6 +214,21 @@ public class ProjectWorkHoursEntrySteps {
         totalWorkedHours += hours;
     }
 
+    @When("I access the summary of logged hours for the project {string}")
+    public void i_access_the_summary_of_logged_hours_for_the_project(String projectName) {
+        Project project = projects.stream()
+            .filter(p -> p.getName().equals(projectName))
+            .findFirst()
+            .orElseThrow(() -> new IllegalArgumentException("Project not found"));
+        List<WorkLog> projectWorkLogs = workLogs.stream()
+            .filter(wl -> tasks.stream().anyMatch(t -> t.getProjectId().equals(project.getId()) && t.getId().equals(wl.getTaskId())))
+            .collect(Collectors.toList());
+
+            totalWorkedHoursPerProject = projectWorkLogs.stream()
+                                                        .mapToDouble(WorkLog::getHours)
+                                                        .sum();
+    }
+
     @And("I then log {int} hours for the task {string} on {string}")
     public void i_then_log_hours_for_the_task_on_the_same_day(int hours, String taskName, String date) {
         Task task = tasks.stream()
@@ -266,6 +301,12 @@ public class ProjectWorkHoursEntrySteps {
             .orElseThrow(() -> new IllegalArgumentException("WorkLog not found for the given task and date"));
 
         assertEquals(expectedHours2, workLog2.getHours(), "Hours for " + taskName2 + " are incorrect.");
+    }
+
+    @Then("the system should display the total hours worked for the project")
+    public void the_system_should_display_the_total_hours_worked_for_the_project() {
+        double expectedTotalHours = 10; // 5 + 3 + 2 
+        assertEquals(expectedTotalHours, totalWorkedHoursPerProject, "The total worked hours for the project are incorrect.");
     }
 
     @And("the total worked hours for the project should be updated")
@@ -343,19 +384,4 @@ public class ProjectWorkHoursEntrySteps {
         workLog.setDate(date);
         return workLog;
     }
-
-
-
-
-
-
-
-
- 
-
-
-
- 
-
-
 }
